@@ -3,511 +3,492 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mo64 Profile | Online</title>
+    <title>موقع سـعـودي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Rubik:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        'brand-yellow': '#FFDE00',
-                        'brand-pink': '#FF90E8',
-                        'brand-blue': '#22CCFF',
-                        'brand-purple': '#9D4EDD',
-                    },
+                    colors: { 'neo-blue': '#0056b3', 'neo-bg': '#e3f2fd' },
                     boxShadow: {
-                        'hard': '4px 4px 0px 0px #000',
-                        'hard-hover': '2px 2px 0px 0px #000',
+                        'neo': '6px 6px 0px 0px rgba(0,0,0,1)',
+                        'neo-hover': '10px 10px 0px 0px rgba(0,0,0,1)',
                     }
                 }
             }
         }
     </script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
-        body {
-            background-color: #fff;
-            background-image: linear-gradient(#f0f0f0 1px, transparent 1px), linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
-            background-size: 20px 20px;
-            font-family: 'Cairo', sans-serif;
-            overflow-x: hidden;
-            user-select: none;
+        body { font-family: 'Cairo', sans-serif; overflow-x: hidden; }
+        #home {
+            height: 100vh; width: 100%;
+            background-image: url('profile.jpg'); 
+            background-size: cover; background-position: center;
+            position: relative; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
         }
-        .marquee-wrapper { display: flex; overflow: hidden; gap: 0; }
-        .marquee-content { flex-shrink: 0; display: flex; align-items: center; justify-content: space-around; min-width: 100%; animation: scroll 20s linear infinite; }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
-        
-        .pixel-svg { width: 100%; height: 100%; display: block; shape-rendering: crispEdges; }
-        .avatar-container { border: 4px solid transparent; transition: all 0.2s; background-color: #f3f4f6; cursor: pointer; width: 100%; aspect-ratio: 1/1; max-width: 80px; margin: 0 auto; }
-        .avatar-option input:checked + .avatar-container { border-color: #000; transform: scale(1.1); box-shadow: 4px 4px 0px #000; z-index: 10; background-color: #fff; }
-        .admin-controls { display: none; }
-        body.admin-active .admin-controls { display: flex; }
-        
-        @keyframes swing { 0% { transform: rotate(var(--r)); } 50% { transform: rotate(calc(var(--r) + 2deg)); } 100% { transform: rotate(var(--r)); } }
-        .hanging-photo:hover { animation: swing 1s ease-in-out infinite; }
-        
-        .hype-anim { animation: bounce-crazy 0.5s ease-in-out; }
-        @keyframes bounce-crazy { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.9); } 100% { transform: scale(1); } }
-        .floating-fab { animation: float-btn 3s ease-in-out infinite; }
-        @keyframes float-btn { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        #commentsList::-webkit-scrollbar { width: 8px; }
-        #commentsList::-webkit-scrollbar-thumb { background: #000; border-radius: 4px; }
-
-        /* أنيميشن القلوب */
-        .heart-svg-btn { transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.5)); }
-        .heart-svg-btn:active { transform: scale(0.8); }
-        .like-bounce { animation: like-bounce 0.4s; }
-        @keyframes like-bounce { 0% { transform: scale(1); } 50% { transform: scale(1.4) rotate(-10deg); } 100% { transform: scale(1); } }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); }
+        .hero-content { position: relative; z-index: 10; text-align: center; color: white; }
+        .neo-btn {
+            background-color: #3b82f6; color: white; font-weight: bold;
+            border: 3px solid black; box-shadow: 5px 5px 0px black; transition: 0.2s; cursor: pointer;
+        }
+        .neo-btn:hover { box-shadow: 8px 8px 0px black; transform: translate(-2px, -2px); }
+        .neo-btn:active { box-shadow: 0px 0px 0px black; transform: translate(0px, 0px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+        .heart-pop { animation: pop 0.3s ease-in-out; }
+        .avatar-container svg { width: 100%; height: 100%; filter: saturate(1.1); }
+        .noselect { user-select: none; -webkit-user-select: none; }
+        /* Loader Style */
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3b82f6; border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; margin: 10px auto; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="flex flex-col min-h-screen text-black">
+<body class="bg-white text-gray-900">
 
-    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
-    <audio id="popSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+    <header class="fixed w-full top-0 z-50 bg-white border-b-4 border-black shadow-md">
+        <nav class="flex justify-between items-center max-w-6xl mx-auto p-4">
+            <div class="font-black text-2xl text-blue-700">Saudi Portfolio</div>
+            <ul class="flex gap-6 font-bold list-none">
+                <li><a href="#home" class="hover:text-blue-600">الرئيسية</a></li>
+                <li><a href="#photo" class="hover:text-blue-600">الصور</a></li>
+                <li><a href="#contact" class="hover:text-blue-600">تواصل</a></li>
+                <li><a href="#guestbook" class="hover:text-blue-600">التعليقات</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <main class="flex-grow flex flex-col items-center justify-center pt-10 pb-6 relative z-10 w-full overflow-hidden">
-        
-        <div class="text-center mb-8 w-full max-w-2xl px-6">
-            <div class="relative w-40 h-40 mx-auto mb-6 group">
-                <div class="absolute inset-0 bg-brand-blue rounded-full border-4 border-black translate-x-2 translate-y-2 transition-transform group-hover:translate-x-1 group-hover:translate-y-1"></div>
-                <img src="profile.png" onerror="this.src='https://api.dicebear.com/9.x/pixel-art/svg?seed=Mo64'" alt="Profile" class="relative w-full h-full object-cover rounded-full border-4 border-black bg-white">
-                <div class="absolute bottom-0 right-0 bg-green-400 w-8 h-8 rounded-full border-4 border-black animate-pulse"></div>
-            </div>
-            <h1 class="text-5xl font-black mb-2">مِشْعَل</h1>
-            <p class="text-xl font-bold text-gray-600 bg-white border-2 border-black inline-block px-4 py-1 shadow-hard -rotate-1">مطور ويب & مصمم ومحاسب كمان 😂</p>
-            <div class="mt-8 relative z-0">
-                <div class="absolute inset-0 bg-brand-yellow transform rotate-1 border-4 border-black shadow-hard translate-y-2 rounded-xl -z-10"></div>
-                <div class="bg-white border-4 border-black p-6 rounded-xl shadow-sm text-lg font-bold leading-relaxed text-gray-800">
-                    أهلاً! أنا مشعل (مواليد الجيل الغريب 2002) بحاول أحقق كل أفكاري الى واقع رقمي وربنا يستر من دماغي.
-                </div>
-            </div>
+    <section id="home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content flex flex-col items-center gap-6">
+            <h1 class="text-6xl md:text-8xl font-black border-4 border-white p-4 backdrop-blur-sm">سـعـودي</h1>
+            <button onclick="openModal()" class="neo-btn text-xl px-8 py-3 mt-4 flex items-center gap-3">
+                <i class="fas fa-pen-fancy"></i> أكتب تعليق للذكرى
+            </button>
         </div>
+    </section>
 
-        <div class="w-full mb-10 py-4 overflow-hidden">
-            <div class="bg-brand-pink border-y-4 border-black py-3 shadow-hard rotate-1 scale-105 marquee-wrapper" dir="ltr">
-                <div class="marquee-content font-black text-xl text-white drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">
-                    <span class="mx-6">☕ انا بشرب قهوة وبنام بعدها عادي</span><span class="mx-6">😏 شايفني طيب؟</span><span class="mx-6">🤖 AI بعشق تعامل مع </span><span class="mx-6">🚀 أفكاري خارج الصندوق</span>
-                </div>
-                <div class="marquee-content font-black text-xl text-white drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">
-                    <span class="mx-6">☕ انا بشرب قهوة وبنام بعدها عادي</span><span class="mx-6">😏 شايفني طيب؟</span><span class="mx-6">🤖 AI بعشق تعامل مع </span><span class="mx-6">🚀 أفكاري خارج الصندوق</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="w-full max-w-5xl px-6 mb-24 mt-12 relative z-10 mx-auto">
-            <div class="relative w-full">
-                <div class="absolute -top-16 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-2 border-4 border-white font-black -rotate-1 shadow-hard z-20 text-xl transform hover:scale-110 transition-transform select-none">
-                    ذكريات عشوائية 📸
-                </div>
-                <svg class="absolute -top-4 left-0 w-full h-16 pointer-events-none z-0 hidden sm:block" viewBox="0 0 100 20" preserveAspectRatio="none">
-                    <path d="M0,0 Q50,20 100,0" fill="none" stroke="black" stroke-width="0.5" />
-                </svg>
-                <div class="flex flex-wrap justify-center gap-6 pt-6">
-                    <div class="hanging-photo relative group cursor-pointer" style="--r: 2deg;">
-                        <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-1 h-12 bg-black z-0"></div>
-                        <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-3 h-3 bg-black rounded-full z-10"></div>
-                        <div class="bg-white p-2 pb-6 border-4 border-black shadow-hard rotate-2 transition-transform duration-300 w-40 relative z-10">
-                            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-3 bg-yellow-200/60 border-l border-r border-black/20 rotate-1"></div> 
-                            <div class="w-full h-32 bg-gray-100 border-2 border-black overflow-hidden mb-2 relative">
-                                <img src="photo1.jpg" onerror="this.src='https://placehold.co/600x400/FFDE00/000?text=Image+1'" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-                            </div>
-                            <p class="text-center font-bold text-sm text-gray-700 font-serif">القطة المشمشية</p>
-                        </div>
-                    </div>
-                    <div class="hanging-photo relative group cursor-pointer mt-4 sm:mt-0" style="--r: -1deg;">
-                        <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-1 h-16 bg-black z-0"></div>
-                        <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-3 h-3 bg-black rounded-full z-10"></div>
-                        <div class="bg-white p-2 pb-6 border-4 border-black shadow-hard -rotate-1 transition-transform duration-300 w-40 relative z-10 translate-y-2">
-                             <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-3 bg-pink-200/60 border-l border-r border-black/20 -rotate-2"></div>
-                            <div class="w-full h-32 bg-gray-100 border-2 border-black overflow-hidden mb-2">
-                                <img src="photo2.jpg" onerror="this.src='https://placehold.co/600x400/FF90E8/000?text=Image+2'" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-                            </div>
-                            <p class="text-center font-bold text-sm text-gray-700 font-serif">إيفنت السنة 🎉</p>
-                        </div>
-                    </div>
-                    <div class="hanging-photo relative group cursor-pointer" style="--r: 1deg;">
-                        <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-1 h-12 bg-black z-0"></div>
-                        <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-3 h-3 bg-black rounded-full z-10"></div>
-                        <div class="bg-white p-2 pb-6 border-4 border-black shadow-hard rotate-1 transition-transform duration-300 w-40 relative z-10">
-                            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-3 bg-blue-200/60 border-l border-r border-black/20 rotate-0"></div>
-                            <div class="w-full h-32 bg-gray-100 border-2 border-black overflow-hidden mb-2">
-                                <img src="photo3.jpg" onerror="this.src='https://placehold.co/600x400/22CCFF/000?text=Image+3'" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-                            </div>
-                            <p class="text-center font-bold text-sm text-gray-700 font-serif">مكان شغلي 💻</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="w-full max-w-2xl px-6 mb-12">
-            <div class="bg-white border-4 border-black p-8 shadow-hard relative mt-4">
-                <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-brand-blue px-8 py-2 border-4 border-black font-black -rotate-1 text-black text-xl shadow-sm">أقسامي 📂</div>
-                <div class="flex flex-col gap-4 mt-4">
-                    <button onclick="showWorkInProgress('websites')" class="btn-action bg-brand-blue border-4 border-black p-4 text-center font-black text-xl shadow-[4px_4px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-3 w-full">
-                        <span>مواقعي</span>
-                    </button>
-                    <button onclick="showWorkInProgress('designs')" class="btn-action bg-brand-pink border-4 border-black p-4 text-center font-black text-xl shadow-[4px_4px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-3 w-full">
-                        <span>تصاميمي</span>
-                    </button>
-                    <button onclick="openContactModal()" class="btn-action bg-green-400 border-4 border-black p-4 text-center font-black text-xl shadow-[4px_4px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-3 text-black w-full">
-                        <i class="fa-solid fa-comments text-2xl"></i>
-                        <span>كلمني</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="w-full max-w-2xl px-6 mb-12">
-            <div class="bg-white border-4 border-black p-6 shadow-hard relative mt-4">
-                <div id="guestbookTitle" class="absolute -top-5 left-1/2 -translate-x-1/2 bg-brand-yellow px-4 py-1 border-4 border-black font-black rotate-1 text-black cursor-pointer hover:scale-105 transition-transform select-none">
-                    ساحة الزوار 💬
-                </div>
-                
-                <div id="commentsList" class="space-y-4 mt-6 max-h-80 overflow-y-auto p-2">
-                    <div class="text-center text-gray-500 font-bold loading-msg">جاري الاتصال بقاعدة البيانات... ⏳</div>
-                </div>
-
-                <button onclick="openCommentModal()" class="btn-action w-full mt-6 bg-black text-white border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-pen-nib"></i> أضف تعليقك
+    <section id="photo" class="py-20 bg-white text-center border-t-4 border-black">
+        <h2 class="text-3xl font-bold text-blue-800 mb-10">معرض الصور</h2>
+        <div class="max-w-4xl mx-auto bg-white p-4 border-4 border-black shadow-neo rounded-none">
+            <div class="main-display mb-4 relative">
+                <img id="current-img" src="https://via.placeholder.com/800x500?text=جاري+التحميل..." class="w-full h-96 object-cover border-2 border-black">
+                <button id="delete-img-btn" onclick="deleteCurrentImage()" class="hidden absolute top-2 right-2 bg-red-600 text-white p-2 border-2 border-black font-bold hover:bg-red-700 text-sm">
+                    <i class="fas fa-trash"></i> حذف
                 </button>
             </div>
-        </div>
-    </main>
-
-    <div class="fixed bottom-6 right-6 z-50 floating-fab group">
-        <div id="hypeCount" class="absolute -top-3 -left-3 bg-red-500 text-white font-black border-2 border-black px-2 py-1 rounded-full text-sm z-20 shadow-hard-hover">0</div>
-        <button id="hypeBtn" class="bg-brand-yellow w-20 h-20 rounded-full border-4 border-black shadow-hard group-hover:scale-110 transition-all flex items-center justify-center text-4xl active:bg-white">🔥</button>
-    </div>
-
-    <div id="infoModal" class="fixed inset-0 bg-black/80 z-[300] hidden flex items-center justify-center p-6 backdrop-blur-sm">
-        <div class="bg-white border-4 border-black shadow-hard p-8 w-full max-w-md text-center relative">
-            <h2 id="infoTitle" class="text-3xl font-black mb-4"></h2>
-            <p id="infoBody" class="text-lg font-bold text-gray-700 mb-8 leading-relaxed"></p>
-            <button onclick="closeInfo()" class="w-full bg-black text-white border-4 border-black p-4 font-black text-xl hover:bg-brand-blue hover:text-black">تمام 😂</button>
-        </div>
-    </div>
-
-    <div id="welcomeModal" class="fixed inset-0 bg-black/80 z-[300] hidden flex items-center justify-center p-6 backdrop-blur-sm">
-        <div class="bg-white border-4 border-black shadow-hard p-8 w-full max-w-md text-center relative">
-            <h2 id="welcomeTitle" class="text-3xl font-black mb-4"></h2>
-            <p id="welcomeBody" class="text-lg font-bold text-gray-700 mb-8 leading-relaxed"></p>
-            <button onclick="closeWelcome()" class="w-full bg-black text-white border-4 border-black p-4 font-black text-xl hover:bg-brand-blue hover:text-black">اشطا، فهمت! 🚀</button>
-        </div>
-    </div>
-
-    <div id="contactModal" class="fixed inset-0 bg-black/80 z-[200] hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white border-4 border-black shadow-hard p-6 w-full max-w-sm relative">
-            <button onclick="closeContactModal()" class="absolute -top-4 -right-4 bg-red-500 text-white w-10 h-10 border-4 border-black font-black hover:scale-110">X</button>
-            <h2 class="text-2xl font-black text-center mb-6 bg-brand-blue border-2 border-black inline-block px-4 mx-auto rotate-1">تواصل معي 📞</h2>
-            <div class="flex flex-col gap-3">
-                <a href="https://wa.me/201551179695" target="_blank" class="flex items-center gap-4 bg-[#25D366] border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-whatsapp text-3xl"></i> <span class="text-xl">WhatsApp</span></a>
-                <a href="https://Instagram.com/misho_64" target="_blank" class="flex items-center gap-4 bg-gradient-to-r from-purple-500 to-pink-500 border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-instagram text-3xl"></i> <span class="text-xl">Instagram</span></a>
-                <a href="https://www.snapchat.com/add/misho_64" target="_blank" class="flex items-center gap-4 bg-[#FFFC00] border-4 border-black p-3 font-black text-black hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-snapchat text-3xl"></i> <span class="text-xl">Snapchat</span></a>
-                <a href="https://www.facebook.com/share/1A57dR6k74/" target="_blank" class="flex items-center gap-4 bg-[#1877F2] border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-facebook text-3xl"></i> <span class="text-xl">Facebook</span></a>
-                <a href="https://x.com/misho_64" target="_blank" class="flex items-center gap-4 bg-black border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-x-twitter text-3xl"></i> <span class="text-xl">Twitter / X</span></a>
-                <a href="https://t.me/misho_64" target="_blank" class="flex items-center gap-4 bg-[#0088cc] border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-telegram text-3xl"></i> <span class="text-xl">Telegram</span></a>
+            <div id="thumbnails-container" class="thumbnails flex gap-4 overflow-x-auto pb-4 min-h-[100px] items-center justify-center">
+                <p class="text-gray-400 font-bold">جاري جلب الصور...</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="commentModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white border-4 border-black shadow-hard p-6 w-full max-w-md relative">
-            <button onclick="closeCommentModal()" class="absolute -top-4 -right-4 bg-red-500 text-white w-10 h-10 border-4 border-black font-black hover:scale-110">X</button>
-            <h2 class="text-2xl font-black text-center mb-6 bg-brand-yellow border-2 border-black inline-block px-4 mx-auto -rotate-2">اختر شخصيتك 👾</h2>
-            <div id="step1">
-                <div class="mb-4">
-                    <label class="block font-bold mb-2">اسمك المستعار:</label>
-                    <input type="text" id="commentName" maxlength="11" placeholder="اكتب اسمك (11 حرف)" class="w-full bg-gray-100 border-4 border-black p-2 font-bold outline-none focus:bg-brand-blue/20">
-                </div>
-                <label class="block font-bold mb-2">الشخصية (بكسل آرت):</label>
-                <div class="grid grid-cols-3 gap-3 mb-6">
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden" checked><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#FF90E8"/><path d="M6 3H12V6H14V9H12V11H10V14H6V11H4V9H6V3Z" fill="#4ADE80"/><path d="M10 4H11V5H10V4Z" fill="black"/><path d="M10 7H13V8H10V7Z" fill="white"/><path d="M4 9H6V10H4V9Z" fill="#166534"/></svg></div></label>
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#22CCFF"/><path d="M4 3H6V6H10V3H12V6H13V10H12V13H4V10H3V6H4V3Z" fill="white"/><path d="M5 4H6V6H5V4Z" fill="#F472B6"/><path d="M10 4H11V6H10V4Z" fill="#F472B6"/><path d="M5 8H6V9H5V8Z" fill="black"/><path d="M10 8H11V9H10V8Z" fill="black"/><path d="M7 10H9V11H7V10Z" fill="#F472B6"/></svg></div></label>
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#FFDE00"/><path d="M3 3H6V6H10V3H13V6H14V10H12V13H4V10H2V6H3V3Z" fill="#F97316"/><path d="M6 10H10V13H6V10Z" fill="white"/><path d="M4 7H5V8H4V7Z" fill="black"/><path d="M11 7H12V8H11V7Z" fill="black"/><path d="M7 11H9V12H7V11Z" fill="black"/></svg></div></label>
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#FF90E8"/><path d="M2 3H6V6H10V3H14V6H13V11H11V13H5V11H3V6H2V3Z" fill="#9CA3AF"/><path d="M3 4H5V6H3V4Z" fill="#F472B6"/><path d="M11 4H13V6H11V4Z" fill="#F472B6"/><path d="M5 8H6V9H5V8Z" fill="black"/><path d="M10 8H11V9H10V8Z" fill="black"/><path d="M7 11H9V12H7V11Z" fill="black"/><path d="M4 9H2V10H4V9Z" fill="black"/><path d="M12 9H14V10H12V9Z" fill="black"/></svg></div></label>
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#9D4EDD"/><path d="M4 4H12V6H13V9H12V13H4V9H3V6H4V4Z" fill="#FCD34D"/><path d="M4 3H12V5H4V3Z" fill="black"/><path d="M3 5H4V9H3V5Z" fill="black"/><path d="M12 5H13V9H12V5Z" fill="black"/><path d="M5 7H11V9H5V7Z" fill="black"/></svg></div></label>
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#22CCFF"/><path d="M4 4H12V13H4V4Z" fill="#FCD34D"/><path d="M3 3H13V6H12V4H4V6H3V3Z" fill="#EC4899"/><path d="M2 6H4V13H2V6Z" fill="#EC4899"/><path d="M12 6H14V13H12V6Z" fill="#EC4899"/><path d="M5 7H6V9H5V7Z" fill="black"/><path d="M10 7H11V9H10V7Z" fill="black"/><path d="M7 11H9V12H7V11Z" fill="#EC4899"/></svg></div></label>
-                </div>
-                <button onclick="goToStep2()" class="btn-action w-full bg-brand-blue text-black border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all">التالي <i class="fa-solid fa-arrow-left mr-2"></i></button>
+    <section id="contact" class="py-16 text-center bg-white">
+        <h2 class="text-3xl font-bold mb-8">تواصل معي</h2>
+        <div class="flex justify-center gap-6 flex-wrap">
+            <a href="#" class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 text-2xl hover:bg-blue-600 hover:text-white transition-all"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" class="w-16 h-16 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 text-2xl hover:bg-pink-600 hover:text-white transition-all"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-500 text-2xl hover:bg-yellow-400 hover:text-black transition-all"><i class="fab fa-snapchat"></i></a>
+        </div>
+    </section>
+
+    <section id="guestbook" class="bg-blue-50 py-16 border-t-4 border-black min-h-[50vh]">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col items-center">
+            <h2 id="guestbook-title" class="text-4xl font-black text-center mb-6 select-none cursor-pointer border-b-4 border-black inline-block">
+                سجل الزوار
+            </h2>
+            <button onclick="openModal()" class="neo-btn text-lg px-6 py-2 mb-10 flex items-center gap-2 bg-green-500">
+                <i class="fas fa-plus"></i> أضف تعليقك هنا
+            </button>
+            <div id="comments-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-6">
+                <div class="text-center w-full col-span-full text-gray-500 font-bold">جاري تحميل التعليقات...</div>
             </div>
-            <div id="step2" class="hidden">
-                 <div class="flex items-center gap-3 mb-4 p-3 bg-gray-100 border-4 border-black">
-                    <div id="selectedAvatarPreview" class="w-12 h-12 border-2 border-black bg-white overflow-hidden"></div>
-                    <span id="selectedNamePreview" class="font-black"></span>
-                </div>
-                <textarea id="commentText" rows="3" maxlength="20" placeholder="اكتب تعليقك (أقصى حد 20 حرف)..." class="w-full bg-gray-100 border-4 border-black p-2 font-bold outline-none focus:bg-brand-pink/20 mb-4 resize-none"></textarea>
+            <p class="text-gray-500 font-bold text-sm bg-white px-4 py-2 border-2 border-black shadow-neo">
+                للتعديل او حذف خليك ضاغط ع تعليقك
+            </p>
+        </div>
+    </section>
+
+    <div id="comment-modal" class="fixed inset-0 bg-black bg-opacity-80 z-[2000] hidden flex items-center justify-center p-4">
+        <div class="bg-white border-4 border-black shadow-[10px_10px_0px_white] w-full max-w-md p-6 relative">
+            <button onclick="closeModal()" class="absolute top-2 right-2 text-2xl font-bold hover:text-red-600">&times;</button>
+            <h3 class="text-2xl font-black mb-6 text-center border-b-4 border-black pb-2">إضافة توقيع</h3>
+            <div id="step-1">
+                <label class="block font-bold mb-2">اسمك (حد أقصى 11 حرف)</label>
+                <input type="text" id="input-name" maxlength="11" class="w-full border-4 border-black p-2 mb-4 font-bold bg-yellow-100 focus:bg-white outline-none" placeholder="الاسم...">
+                <label class="block font-bold mb-2">اختر شكلك (Avatar)</label>
+                <div class="grid grid-cols-3 gap-2 mb-6" id="avatar-grid"></div>
+                <button onclick="goToStep2()" class="w-full neo-btn py-2 text-lg">التالي</button>
+            </div>
+            <div id="step-2" class="hidden">
+                <label class="block font-bold mb-2">رسالتك (75 حرف فقط)</label>
+                <textarea id="input-msg" maxlength="75" class="w-full border-4 border-black p-2 mb-4 font-bold bg-green-100 h-24 resize-none focus:bg-white outline-none" placeholder="اكتب شيئاً..."></textarea>
                 <div class="flex gap-2">
-                    <button onclick="submitComment()" class="btn-action flex-1 bg-brand-yellow text-black border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all">نشر 🚀</button>
-                    <button onclick="backToStep1()" class="btn-action bg-gray-200 text-black border-4 border-black p-3 font-black hover:bg-gray-300">رجوع</button>
+                    <button onclick="backToStep1()" class="w-1/3 border-4 border-black font-bold hover:bg-gray-200">رجوع</button>
+                    <button onclick="submitComment()" class="w-2/3 neo-btn py-2 text-lg bg-green-500">نشر التعليق</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="adminModal" class="fixed inset-0 bg-black z-[200] hidden flex items-center justify-center p-4">
-        <div class="text-center w-full max-w-sm">
-            <h2 class="text-brand-yellow text-4xl font-black mb-6 animate-pulse">🔒 منطقة محظورة</h2>
-            <input type="password" id="adminPass" placeholder="كلمة السر..." class="w-full bg-black border-4 border-white text-white p-4 text-center text-xl font-bold outline-none mb-4">
-            <button onclick="checkAdmin()" class="bg-white text-black border-4 border-gray-500 w-full p-4 font-black text-xl hover:bg-brand-pink transition-colors">دخول</button>
-            <button onclick="closeAdmin()" class="text-gray-500 mt-4 text-sm hover:text-white">إلغاء</button>
+    <div id="admin-modal" class="fixed inset-0 bg-red-900 bg-opacity-90 z-[3000] hidden flex items-center justify-center">
+        <div class="bg-white border-4 border-black p-8 text-center shadow-neo w-96 relative">
+            <button onclick="document.getElementById('admin-modal').classList.add('hidden')" class="absolute top-2 right-2 font-bold text-xl">X</button>
+            
+            <h3 class="text-xl font-black mb-4 border-b-2 border-black pb-2">منطقة الإدارة</h3>
+            
+            <div id="admin-login-section">
+                <input type="password" id="admin-pass" class="border-4 border-black p-2 mb-4 w-full" placeholder="كلمة السر">
+                <button onclick="checkAdmin()" class="neo-btn w-full py-2">دخول</button>
+            </div>
+
+            <div id="admin-panel-section" class="hidden">
+                <h4 class="font-bold mb-2 text-blue-800">إضافة صورة (ImgBB)</h4>
+                
+                <div class="border-2 border-dashed border-black p-4 mb-4 bg-gray-50">
+                    <input type="file" id="gallery-upload" accept="image/*" class="w-full mb-2 text-sm">
+                    <div class="loader" id="upload-loader"></div>
+                    <button onclick="uploadToImgBB()" class="bg-green-600 text-white font-bold py-1 px-4 border-2 border-black shadow-neo hover:shadow-none transition-all w-full mt-2">
+                        رفع الصورة
+                    </button>
+                </div>
+                <p class="text-xs text-gray-500 font-bold mb-4">* يتم الرفع عبر ImgBB وحفظ الرابط تلقائياً.</p>
+                <button onclick="document.getElementById('admin-modal').classList.add('hidden')" class="text-red-600 underline font-bold">إغلاق</button>
+            </div>
         </div>
     </div>
 
-    <footer class="w-full bg-white border-t-4 border-black py-10 relative z-20">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <div class="flex justify-center gap-6 mb-8 text-3xl">
-                <a href="https://Instagram.com/misho_64" target="_blank" class="social-btn w-14 h-14 flex items-center justify-center bg-brand-purple text-white border-4 border-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all rounded-full"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://www.linkedin.com/in/mashal-said" target="_blank" class="social-btn w-14 h-14 flex items-center justify-center bg-brand-blue text-white border-4 border-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all rounded-full"><i class="fa-brands fa-linkedin"></i></a>
+    <div id="edit-modal" class="fixed inset-0 bg-blue-100 bg-opacity-90 z-[3000] hidden flex items-center justify-center">
+        <div class="bg-white border-4 border-black p-6 w-96 shadow-neo relative max-h-[90vh] overflow-y-auto">
+            <h3 class="font-black mb-4 text-center text-xl border-b-2 border-black pb-2">تعديل التعليق</h3>
+            <label class="block font-bold mb-1 text-sm">تعديل الاسم:</label>
+            <input id="edit-name" class="border-2 border-black w-full mb-3 p-2" placeholder="الاسم">
+            <label class="block font-bold mb-1 text-sm">تعديل الصورة:</label>
+            <div id="edit-avatar-grid" class="grid grid-cols-3 gap-2 mb-4"></div>
+            <label class="block font-bold mb-1 text-sm">تعديل الرسالة:</label>
+            <textarea id="edit-msg" maxlength="75" class="border-2 border-black w-full mb-3 p-2 h-20 resize-none" placeholder="الرسالة"></textarea>
+            <div id="admin-likes-field" class="hidden mb-3">
+                <label class="text-xs font-bold">عدد اللايكات (أدمن):</label>
+                <input id="edit-likes" type="number" class="border-2 border-black w-full p-1">
             </div>
-            <div class="bg-black text-white py-4 px-6 border-4 border-black rotate-1 shadow-hard hover:rotate-0 transition-transform inline-block">
-                <p class="font-bold text-sm" style="font-family: 'Rubik', sans-serif;"><span class="text-brand-yellow">Powered by:</span> Mo64 Ai <span class="mx-2">|</span> <span class="text-brand-pink">Made by:</span> 64Group</p>
+            <input type="hidden" id="edit-id">
+            <div class="flex flex-col gap-2">
+                <button onclick="saveEdit()" class="bg-blue-500 text-white font-bold p-2 w-full border-2 border-black neo-btn">حفظ التعديلات</button>
+                <button onclick="deleteCommentFromModal()" class="bg-red-500 text-white font-bold p-2 w-full border-2 border-black neo-btn">إزالة التعليق</button>
+                <button onclick="document.getElementById('edit-modal').classList.add('hidden')" class="text-sm underline font-bold w-full mt-2">إلغاء</button>
             </div>
         </div>
+    </div>
+
+    <footer class="bg-black text-white text-center p-6 mt-0 border-t-4 border-blue-600">
+        <p class="font-bold">Powered by: <span class="text-blue-400">Mo64 Ai</span> | Made by: 64Group</p>
     </footer>
 
     <script>
-        function openContactModal() { document.getElementById('contactModal').classList.remove('hidden'); }
-        function closeContactModal() { document.getElementById('contactModal').classList.add('hidden'); }
-        function openCommentModal() { document.getElementById('commentModal').classList.remove('hidden'); backToStep1(); }
-        function closeCommentModal() { document.getElementById('commentModal').classList.add('hidden'); }
-        function backToStep1() { document.getElementById('step1').classList.remove('hidden'); document.getElementById('step2').classList.add('hidden'); }
-        function closeWelcome() { document.getElementById('welcomeModal').classList.add('hidden'); }
-        function closeAdmin() { document.getElementById('adminModal').classList.add('hidden'); }
-        function closeInfo() { document.getElementById('infoModal').classList.add('hidden'); }
-
-        // دالة إظهار نافذة "لسه بعمل الصفحة"
-        function showWorkInProgress(type) {
-            const modal = document.getElementById('infoModal');
-            const title = document.getElementById('infoTitle');
-            const body = document.getElementById('infoBody');
-
-            title.innerText = "لسه بعمل صفحه 😂";
-
-            if (type === 'websites') {
-                body.innerText = "مواقعي كثيير بس لسه بعمل مكان يجمعهم كلهم في مكان واحد";
-            } else {
-                body.innerText = "تصاميمي كثيير بس لسه بعمل مكان يجمعهم كلهم في مكان واحد";
-            }
-            modal.classList.remove('hidden');
-        }
-
+        // إعدادات Firebase الخاصة بك
         const firebaseConfig = {
-            apiKey: "AIzaSyBO1bAxaOB6lho9hm8bUgQ2bCof5rb9QUw",
-            authDomain: "myweb-30e01.firebaseapp.com",
-            databaseURL: "https://myweb-30e01-default-rtdb.firebaseio.com",
-            projectId: "myweb-30e01",
-            storageBucket: "myweb-30e01.firebasestorage.app",
-            messagingSenderId: "292448655689",
-            appId: "1:292448655689:web:85192576c8446e5a2b6298",
-            measurementId: "G-ZR3VM3LXHK"
+            apiKey: "AIzaSyDrVSLWqC2xfos6_1Q1c7vqXtR94wzgu6o",
+            authDomain: "saudiweb-6e18b.firebaseapp.com",
+            databaseURL: "https://saudiweb-6e18b-default-rtdb.firebaseio.com",
+            projectId: "saudiweb-6e18b",
+            storageBucket: "saudiweb-6e18b.firebasestorage.app",
+            messagingSenderId: "829745180478",
+            appId: "1:829745180478:web:840153d99c4c69d1bd466f",
+            measurementId: "G-2QZBSTN093"
         };
+
+        // مفتاح ImgBB الذي أرسلته
+        const IMGBB_API_KEY = "b9f47c492ffb8f226378f28a4c371d90";
 
         let db;
         try {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
-            console.log("Firebase Connected ✅");
-        } catch(err) {
-            console.error("Firebase Error:", err);
-            document.querySelector('.loading-msg').innerHTML = "خطأ في الاتصال ❌";
-        }
+            loadComments();
+            loadGallery();
+        } catch (e) { console.error("Firebase Error:", e); }
 
-        const clickSound = document.getElementById('clickSound');
-        const popSound = document.getElementById('popSound');
-        function playClick() { clickSound.currentTime = 0; clickSound.play(); }
-        document.querySelectorAll('button, a').forEach(btn => btn.addEventListener('click', playClick));
+        // --- Avatars ---
+        const avatars = [
+            `<svg viewBox="0 0 64 64" class="w-full h-full"><circle cx="32" cy="32" r="30" fill="#e3f2fd" stroke="#000" stroke-width="2"/><path d="M14 26 Q32 10 50 26 L50 40 Q32 50 14 40 Z" fill="#fff" stroke="#000" stroke-width="2"/><path d="M16 26 Q32 14 48 26" fill="none" stroke="#d32f2f" stroke-width="2" stroke-dasharray="4,2"/><circle cx="28" cy="34" r="2" fill="#000"/><circle cx="36" cy="34" r="2" fill="#000"/><path d="M30 40 Q32 42 34 40" stroke="#000" stroke-width="2" fill="none"/></svg>`,
+            `<svg viewBox="0 0 64 64" class="w-full h-full"><circle cx="32" cy="32" r="30" fill="#fff9c4" stroke="#000" stroke-width="2"/><path d="M10 28 Q32 6 54 28 Q56 34 54 38 Q32 32 10 38 Q8 34 10 28 Z" fill="#fff" stroke="#000" stroke-width="2"/><path d="M12 30 Q32 22 52 30" fill="none" stroke="#e0e0e0" stroke-width="2"/><path d="M20 36 Q24 34 28 36" stroke="#000" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M36 36 Q40 34 44 36" stroke="#000" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="24" cy="40" r="2" fill="#000"/><circle cx="40" cy="40" r="2" fill="#000"/><path d="M32 44 C 20 44, 14 48, 12 42 C 14 52, 24 50, 32 46 C 40 50, 50 52, 52 42 C 50 48, 44 44, 32 44 Z" fill="#000"/><path d="M28 52 Q32 50 36 52" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M14 58 Q32 54 50 58 L50 62 L14 62 Z" fill="#3e2723"/><path d="M24 58 Q32 62 40 58 L38 62 L26 62 Z" fill="#f5f5f5"/></svg>`,
+            `<svg viewBox="0 0 64 64" class="w-full h-full"><circle cx="32" cy="32" r="30" fill="#c8e6c9" stroke="#000" stroke-width="2"/><path d="M18 26 Q32 16 46 26 L46 30 Q32 28 18 30 Z" fill="#fff" stroke="#000" stroke-width="2"/><path d="M22 24 Q32 20 42 24" stroke="#ddd" stroke-width="1" fill="none"/><circle cx="28" cy="36" r="2" fill="#000"/><circle cx="36" cy="36" r="2" fill="#000"/><path d="M30 42 Q32 44 34 42" stroke="#000" stroke-width="2" fill="none"/></svg>`,
+            `<svg viewBox="0 0 64 64" class="w-full h-full"><circle cx="32" cy="32" r="30" fill="#ffcdd2" stroke="#000" stroke-width="2"/><path d="M16 30 Q32 10 48 30 Q46 36 44 32 Q32 20 20 32 Q18 36 16 30" fill="#424242"/><circle cx="28" cy="36" r="2" fill="#000"/><circle cx="36" cy="36" r="2" fill="#000"/><path d="M28 44 Q32 46 36 44" stroke="#000" stroke-width="2" fill="none"/></svg>`,
+            `<svg viewBox="0 0 64 64" class="w-full h-full"><circle cx="32" cy="32" r="30" fill="#f8bbd0" stroke="#000" stroke-width="2"/><path d="M20 20 Q32 10 44 20 L48 50 Q32 60 16 50 Z" fill="#ce93d8"/><path d="M24 24 Q32 20 40 24 Q40 40 32 44 Q24 40 24 24 Z" fill="#ffccaa"/><circle cx="28" cy="32" r="2" fill="#000"/><circle cx="36" cy="32" r="2" fill="#000"/><path d="M30 38 Q32 40 34 38" stroke="#000" stroke-width="2" fill="none"/></svg>`,
+            `<svg viewBox="0 0 64 64" class="w-full h-full"><circle cx="32" cy="32" r="30" fill="#e1bee7" stroke="#000" stroke-width="2"/><path d="M18 20 Q32 5 46 20 L48 60 Q32 65 16 60 Z" fill="#212121"/><path d="M24 26 Q32 22 40 26 Q40 42 32 46 Q24 42 24 26 Z" fill="#f1c27d"/><circle cx="28" cy="34" r="2" fill="#000"/><circle cx="36" cy="34" r="2" fill="#000"/><path d="M30 40 Q32 42 34 40" stroke="#000" stroke-width="2" fill="none"/></svg>`
+        ];
 
-        const hypeBtn = document.getElementById('hypeBtn');
-        const hypeCount = document.getElementById('hypeCount');
-        let currentHype = localStorage.getItem('hypeLevel') ? parseInt(localStorage.getItem('hypeLevel')) : 1042;
-        hypeCount.innerText = currentHype;
-        hypeBtn.addEventListener('click', () => {
-            currentHype++;
-            hypeCount.innerText = currentHype;
-            localStorage.setItem('hypeLevel', currentHype);
-            popSound.currentTime = 0; popSound.play();
-            hypeBtn.classList.add('hype-anim');
-            setTimeout(() => hypeBtn.classList.remove('hype-anim'), 500);
-            confetti({ particleCount: 80, spread: 60, origin: { x: 0.9, y: 0.9 }, angle: 135, colors: ['#FFDE00', '#FF90E8', '#22CCFF'] });
-        });
+        let selectedAvatarIndex = 0;
+        let editAvatarIndex = 0;
+        let isAdmin = false;
+        let currentGalleryImageKey = null;
 
-        window.addEventListener('DOMContentLoaded', () => {
-            let visitCount = localStorage.getItem('mo64_visit_count');
-            if(!visitCount) visitCount = 0;
-            setTimeout(() => {
-                if (visitCount == 0) {
-                    document.getElementById('welcomeTitle').innerText = "أهلاً بيك يا حلو 👋";
-                    document.getElementById('welcomeBody').innerHTML = "نورت موقعي!<br>متنساش تضغط على علامة النار (🔥) كثييييير!";
-                    localStorage.setItem('mo64_visit_count', 1);
-                    document.getElementById('welcomeModal').classList.remove('hidden');
-                    popSound.play();
-                } else if (visitCount == 1) {
-                    document.getElementById('welcomeTitle').innerText = "أنت جيت تاني؟ 😒";
-                    document.getElementById('welcomeBody').innerHTML = "انت جيت تاني؟ 😒<br>انت منورنيي اكيد الموقع عجبك يا حلو 🤑";
-                    localStorage.setItem('mo64_visit_count', 2);
-                    document.getElementById('welcomeModal').classList.remove('hidden');
-                    popSound.play();
-                }
-            }, 1000);
-        });
+        // --- IMGBB UPLOAD LOGIC ---
+        function uploadToImgBB() {
+            const fileInput = document.getElementById('gallery-upload');
+            const file = fileInput.files[0];
+            const loader = document.getElementById('upload-loader');
+            
+            if (!file) return alert('اختر صورة أولاً');
 
-        const commentsList = document.getElementById('commentsList');
-        const nameInput = document.getElementById('commentName');
-        const commentInput = document.getElementById('commentText');
-        let selectedAvatarSVG = null;
+            loader.style.display = 'block';
 
-        if(db) {
-            const commentsRef = db.ref('comments');
-            commentsRef.on('value', (snapshot) => {
-                commentsList.innerHTML = '';
-                const data = snapshot.val();
-                if(data) {
-                    const commentsArray = Object.entries(data).reverse();
-                    commentsArray.forEach(([key, value]) => {
-                        addCommentToDOM(key, value.name, value.text, value.avatar, value.likes || 0);
+            const formData = new FormData();
+            formData.append("image", file);
+
+            fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    const imageUrl = data.data.url;
+                    db.ref('gallery').push({
+                        url: imageUrl,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    }).then(() => {
+                        loader.style.display = 'none';
+                        fileInput.value = '';
+                        alert('تم الرفع والحفظ بنجاح!');
                     });
                 } else {
-                    commentsList.innerHTML = '<div class="text-center text-gray-400 font-bold">كن الأول في التعليق! 🚀</div>';
+                    throw new Error('فشل الرفع لـ ImgBB');
                 }
+            })
+            .catch(error => {
+                loader.style.display = 'none';
+                alert('حدث خطأ: ' + error.message);
             });
         }
 
-        // دالة لاختيار شكل عشوائي للقلب من 5 أشكال مختلفة
-        function getRandomHeartSVG() {
-            const colors = ['#FF0099', '#FFDE00', '#22CCFF', '#9D4EDD', '#000000', '#FF0000', '#00FF00', '#FF5733'];
-            const c1 = colors[Math.floor(Math.random() * colors.length)];
-            const c2 = colors[Math.floor(Math.random() * colors.length)];
-            const c3 = colors[Math.floor(Math.random() * colors.length)];
-            const type = Math.floor(Math.random() * 5);
-            let svgContent = '';
+        // --- Gallery Display Logic ---
+        function loadGallery() {
+            const container = document.getElementById('thumbnails-container');
+            const mainImg = document.getElementById('current-img');
+            
+            db.ref('gallery').on('value', (snapshot) => {
+                container.innerHTML = '';
+                const data = snapshot.val();
+                
+                if (!data) {
+                    container.innerHTML = '<p class="text-sm">لا توجد صور.</p>';
+                    return;
+                }
 
-            if (type === 0) {
-                // 1. القلب الزجزاج
-                svgContent = `<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${c1}" stroke="black" stroke-width="1.5"/><path d="M6 10 L8 8 L10 10 L12 8 L14 10 L16 8 L18 10" stroke="${c2}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="14" r="2.5" fill="${c3}" stroke="black" stroke-width="1"/>`;
-            } else if (type === 1) {
-                // 2. القلب البكسل
-                svgContent = `<path d="M7 4h2v2h2v-2h2v-2h2v2h2v2h2v2h-2v2h-2v2h-2v2h-2v2h-2v-2h-2v-2h-2v-2h-2v-2h2v-2z" fill="${c1}" stroke="black" stroke-width="1"/><rect x="9" y="7" width="2" height="2" fill="${c2}"/><rect x="13" y="7" width="2" height="2" fill="${c2}"/>`;
-            } else if (type === 2) {
-                // 3. القلب المخطط
-                svgContent = `<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${c1}" stroke="black" stroke-width="1.5"/><path d="M4 9h16M6 13h12M9 17h6" stroke="${c2}" stroke-width="2"/>`;
-            } else if (type === 3) {
-                // 4. القلب المستهدف
-                svgContent = `<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${c1}" stroke="black" stroke-width="1.5"/><path d="M12 17l-1-1C8 13 6 11 6 9c0-1.5 1-2.5 2.5-2.5 1 0 2 .5 2.5 1.5.5-1 1.5-1.5 2.5-1.5 1.5 0 2.5 1 2.5 2.5 0 2-2 4-5 7l-1 1z" fill="${c2}" stroke="black"/>`;
-            } else {
-                // 5. كلاسيك ميكس
-                svgContent = `<defs><linearGradient id="g${Math.random()}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:${c1};stop-opacity:1" /><stop offset="100%" style="stop-color:${c2};stop-opacity:1" /></linearGradient></defs><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#g${Math.random()})" stroke="black" stroke-width="1.5"/>`;
-            }
-            return `<svg viewBox="0 0 24 24" class="w-8 h-8 hover:scale-110 transition-transform cursor-pointer heart-svg-btn">${svgContent}</svg>`;
-        }
+                const images = Object.entries(data).reverse();
+                
+                if (images.length > 0) {
+                    changeMainImage(images[0][1].url, images[0][0]);
+                }
 
-        function addCommentToDOM(key, name, text, avatarSVG, likes) {
-            const safeName = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            // يتم توليد القلب فقط عند العرض (سيتغير شكله مع كل تحميل للصفحة وهذا يعطي شعور التجدد)
-            const heartSVG = getRandomHeartSVG();
-
-            const html = `
-                <div class="comment-item flex gap-3 bg-white border-4 border-black p-3 shadow-[2px_2px_0px_#000] relative group" data-key="${key}">
-                    <div class="w-12 h-12 border-2 border-black bg-white overflow-hidden shrink-0">${avatarSVG}</div>
-                    <div class="flex-1">
-                        <h4 class="comment-name font-black text-sm">${safeName}</h4>
-                        <p class="comment-text text-sm font-bold text-gray-600 break-words">${safeText}</p>
-                    </div>
-                    <div class="flex flex-col items-center justify-center gap-1 ml-2">
-                        <div onclick="likeComment('${key}')">${heartSVG}</div>
-                        <span class="text-xs font-black">${likes}</span>
-                    </div>
-                    <div class="admin-controls flex-col gap-2 absolute left-2 top-2">
-                        <button onclick="deleteComment('${key}')" class="bg-red-500 text-white w-6 h-6 border-2 border-black text-xs hover:scale-110"><i class="fa-solid fa-trash"></i></button>
-                        <button onclick="editComment('${key}', '${safeName}', '${safeText}', ${likes})" class="bg-blue-500 text-white w-6 h-6 border-2 border-black text-xs hover:scale-110"><i class="fa-solid fa-pen"></i></button>
-                    </div>
-                </div>`;
-            commentsList.insertAdjacentHTML('beforeend', html);
-        }
-
-        function likeComment(key) {
-            const btn = document.querySelector(`div[data-key="${key}"] .heart-svg-btn`);
-            if(btn) {
-                btn.classList.remove('like-bounce');
-                void btn.offsetWidth;
-                btn.classList.add('like-bounce');
-            }
-            db.ref('comments/' + key + '/likes').transaction((currentLikes) => {
-                return (currentLikes || 0) + 1;
+                images.forEach(([key, val]) => {
+                    const img = document.createElement('img');
+                    img.src = val.url;
+                    img.className = "w-24 h-24 object-cover border-2 border-black cursor-pointer hover:opacity-100 opacity-60 rounded transition-all";
+                    img.onclick = () => changeMainImage(val.url, key);
+                    container.appendChild(img);
+                });
             });
-            popSound.currentTime = 0; popSound.play();
+        }
+
+        function changeMainImage(url, key) {
+            document.getElementById('current-img').src = url;
+            currentGalleryImageKey = key;
+            document.querySelectorAll('#thumbnails-container img').forEach(img => {
+                img.classList.add('opacity-60');
+                if(img.src === url) img.classList.remove('opacity-60');
+            });
+            const deleteBtn = document.getElementById('delete-img-btn');
+            if (isAdmin && key) deleteBtn.classList.remove('hidden');
+            else deleteBtn.classList.add('hidden');
+        }
+
+        function deleteCurrentImage() {
+            if (!isAdmin || !currentGalleryImageKey) return;
+            if (confirm('حذف هذه الصورة من المعرض؟')) {
+                db.ref('gallery/' + currentGalleryImageKey).remove().then(() => {
+                    alert('تم الحذف');
+                    currentGalleryImageKey = null;
+                });
+            }
+        }
+
+        // --- Comments Logic ---
+        function openModal() {
+            document.getElementById('comment-modal').classList.remove('hidden');
+            renderAvatarSelection('avatar-grid', (idx) => selectedAvatarIndex = idx, selectedAvatarIndex);
+        }
+        function closeModal() {
+            document.getElementById('comment-modal').classList.add('hidden');
+            document.getElementById('step-1').classList.remove('hidden');
+            document.getElementById('step-2').classList.add('hidden');
+        }
+        
+        function renderAvatarSelection(containerId, callback, currentSelection) {
+            const grid = document.getElementById(containerId);
+            grid.innerHTML = '';
+            avatars.forEach((svg, index) => {
+                const div = document.createElement('div');
+                div.className = `avatar-container border-4 cursor-pointer p-1 ${currentSelection === index ? 'border-blue-600 bg-blue-100' : 'border-gray-300'}`;
+                div.innerHTML = svg;
+                div.onclick = () => {
+                    callback(index);
+                    renderAvatarSelection(containerId, callback, index);
+                };
+                grid.appendChild(div);
+            });
         }
 
         function goToStep2() {
-            if (!nameInput.value.trim()) { alert("اكتب اسمك الأول!"); return; }
-            const selectedRadio = document.querySelector('input[name="avatar"]:checked');
-            const svgElement = selectedRadio.nextElementSibling.querySelector('svg');
-            if (svgElement) {
-                selectedAvatarSVG = svgElement.outerHTML;
-                document.getElementById('selectedAvatarPreview').innerHTML = selectedAvatarSVG;
-                document.getElementById('selectedNamePreview').innerText = nameInput.value;
-                document.getElementById('step1').classList.add('hidden');
-                document.getElementById('step2').classList.remove('hidden');
-            }
+            const name = document.getElementById('input-name').value.trim();
+            if (!name) return alert('اكتب اسمك الأول يا بطل!');
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.remove('hidden');
+        }
+        function backToStep1() {
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-1').classList.remove('hidden');
+        }
+
+        function getRandomHeartSVG() {
+            const colors = [{c1:'#FF00CC', c2:'#333399'}, {c1:'#00F260', c2:'#0575E6'}, {c1:'#fc4a1a', c2:'#f7b733'}, {c1:'#e1eec3', c2:'#f05053'}, {c1:'#c21500', c2:'#ffc500'}, {c1:'#8E2DE2', c2:'#4A00E0'}];
+            const colorPair = colors[Math.floor(Math.random() * colors.length)];
+            const id = Date.now() + Math.random().toString(36).substring(2);
+            const styles = [
+                `<svg viewBox="0 0 24 24"><defs><linearGradient id="g${id}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${colorPair.c1}"/><stop offset="100%" stop-color="${colorPair.c2}"/></linearGradient></defs><path d="M12 2L2 12l10 10 10-10L12 2z" fill="url(#g${id})" stroke="#000" stroke-width="1.5"/></svg>`,
+                `<svg viewBox="0 0 24 24"><defs><linearGradient id="g${id}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${colorPair.c1}"/><stop offset="100%" stop-color="${colorPair.c2}"/></linearGradient></defs><path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" fill="url(#g${id})" stroke="#000" stroke-width="1.5"/></svg>`,
+                `<svg viewBox="0 0 24 24"><defs><linearGradient id="g${id}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${colorPair.c1}"/><stop offset="100%" stop-color="${colorPair.c2}"/></linearGradient></defs><path d="M12 2L21 7V17L12 22L3 17V7L12 2Z" fill="url(#g${id})" stroke="#000" stroke-width="1.5"/></svg>`,
+                `<svg viewBox="0 0 24 24"><defs><linearGradient id="g${id}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${colorPair.c1}"/><stop offset="100%" stop-color="${colorPair.c2}"/></linearGradient></defs><path d="M12 3C16.97 3 21 7.03 21 12C21 16.97 16.97 21 12 21C7.03 21 3 16.97 3 12C3 7.03 7.03 3 12 3Z" fill="url(#g${id})" stroke="#000" stroke-width="1.5" transform="rotate(${Math.random()*360} 12 12) scale(${0.8+Math.random()*0.4})"/></svg>`,
+                `<svg viewBox="0 0 24 24"><defs><linearGradient id="g${id}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${colorPair.c1}"/><stop offset="100%" stop-color="${colorPair.c2}"/></linearGradient></defs><path d="M7 2v11h3v9l7-12h-3l4-8z" fill="url(#g${id})" stroke="#000" stroke-width="1.5"/></svg>`
+            ];
+            return styles[Math.floor(Math.random() * styles.length)];
+        }
+
+        function saveMyCommentId(key) {
+            let myComments = JSON.parse(localStorage.getItem('my_comments') || '[]');
+            myComments.push(key);
+            localStorage.setItem('my_comments', JSON.stringify(myComments));
+        }
+        function isMyComment(key) {
+             let myComments = JSON.parse(localStorage.getItem('my_comments') || '[]');
+             return myComments.includes(key);
         }
 
         function submitComment() {
-            if (!commentInput.value.trim()) { alert("اكتب أي حاجة!"); return; }
-            if(db) {
-                db.ref('comments').push({
-                    name: nameInput.value,
-                    text: commentInput.value,
-                    avatar: selectedAvatarSVG,
-                    likes: 0,
-                    timestamp: Date.now()
-                }).then(() => {
-                    commentInput.value = '';
-                    closeCommentModal();
-                    popSound.play();
-                }).catch(err => { alert("خطأ في الإرسال"); console.error(err); });
-            }
+            const name = document.getElementById('input-name').value.trim();
+            const msg = document.getElementById('input-msg').value.trim();
+            if (!msg) return alert('الرسالة فارغة!');
+            const newComment = {
+                name: name, avatarIndex: selectedAvatarIndex, message: msg, likes: 0,
+                heartSVG: getRandomHeartSVG(), timestamp: firebase.database.ServerValue.TIMESTAMP
+            };
+            db.ref('comments').push(newComment).then((snap) => {
+                saveMyCommentId(snap.key);
+                closeModal();
+                document.getElementById('input-name').value = '';
+                document.getElementById('input-msg').value = '';
+                playSound();
+                setTimeout(() => { document.getElementById('guestbook').scrollIntoView({ behavior: 'smooth' }); }, 500);
+            });
         }
 
-        let clickCount = 0; let clickTimer;
-        document.getElementById('guestbookTitle').addEventListener('click', () => {
-            clickCount++;
-            if (clickCount === 1) clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
-            if (clickCount === 3) { clearTimeout(clickTimer); clickCount = 0; document.getElementById('adminModal').classList.remove('hidden'); }
-        });
-        function checkAdmin() {
-            if (document.getElementById('adminPass').value === "meme2003") {
-                document.body.classList.add('admin-active'); closeAdmin(); alert("أهلاً يا مدير! 🕵️‍♂️");
-            } else { alert("كلمة السر غلط! 😂"); }
-        }
+        function loadComments() {
+            const container = document.getElementById('comments-container');
+            db.ref('comments').on('value', (snapshot) => {
+                container.innerHTML = '';
+                const data = snapshot.val();
+                if (!data) { container.innerHTML = '<div class="col-span-full text-center text-gray-400">كن أول من يكتب هنا!</div>'; return; }
+                Object.entries(data).reverse().forEach(([key, val]) => {
+                    const div = document.createElement('div');
+                    div.className = "noselect bg-white border-4 border-black p-4 flex items-start gap-4 shadow-neo hover:shadow-neo-hover transition-all relative group";
+                    
+                    let pressTimer;
+                    div.addEventListener('touchstart', function(e) { pressTimer = setTimeout(() => handleLongPress(key, val), 800); });
+                    div.addEventListener('touchend', function(e) { clearTimeout(pressTimer); });
+                    div.addEventListener('mousedown', function(e) { pressTimer = setTimeout(() => handleLongPress(key, val), 800); });
+                    div.addEventListener('mouseup', function(e) { clearTimeout(pressTimer); });
 
-        function deleteComment(key) {
-            if(confirm("حذف نهائي؟")) { db.ref('comments/' + key).remove(); }
-        }
-
-        function editComment(key, oldName, oldText, oldLikes) {
-            const newName = prompt("تعديل الاسم:", oldName);
-            if(newName !== null) {
-                const newText = prompt("تعديل النص:", oldText);
-                if(newText !== null) {
-                    const newLikes = prompt("تعديل عدد اللايكات:", oldLikes);
-                    if (newLikes !== null) {
-                        db.ref('comments/' + key).update({
-                            name: newName || oldName,
-                            text: newText || oldText,
-                            likes: parseInt(newLikes) || 0
-                        });
+                    let controls = '';
+                    if (isAdmin) {
+                        controls = `<div class="absolute top-2 left-2 flex gap-2"><button onclick="deleteComment('${key}')" class="bg-red-500 text-white text-xs px-2 py-1 border-2 border-black">X</button><button onclick="openEditModal('${key}', '${val.name}', '${val.message}', ${val.likes}, ${val.avatarIndex}, ${val.timestamp})" class="bg-yellow-400 text-black text-xs px-2 py-1 border-2 border-black">E</button></div>`;
                     }
+                    
+                    div.innerHTML = `${controls}<div class="avatar-container w-16 h-16 flex-shrink-0 border-2 border-black bg-gray-100 overflow-hidden rounded-full">${avatars[val.avatarIndex]}</div><div class="flex-grow"><h4 class="font-black text-lg text-blue-800 leading-none mb-1">${val.name}</h4><p class="text-sm font-bold break-words leading-tight bg-gray-50 p-1 border border-gray-200">${val.message}</p></div><div class="flex flex-col items-center justify-center gap-1 cursor-pointer" onclick="likeComment('${key}')"><div class="w-10 h-10 transition-transform active:scale-90" id="heart-${key}">${val.heartSVG}</div><span class="font-black text-xs border-2 border-black px-1 bg-yellow-200">${val.likes}</span></div>`;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function handleLongPress(key, val) {
+            if (isMyComment(key) || isAdmin) {
+                const now = Date.now();
+                if (!isAdmin && (now - val.timestamp > 300000)) {
+                    alert('عذراً، انتهت مهلة التعديل (5 دقائق من النشر).'); return;
                 }
+                openEditModal(key, val.name, val.message, val.likes, val.avatarIndex, val.timestamp);
             }
         }
+
+        function likeComment(key) {
+            const heartElem = document.getElementById(`heart-${key}`);
+            if(heartElem) { heartElem.classList.add('heart-pop'); setTimeout(() => heartElem.classList.remove('heart-pop'), 300); }
+            db.ref('comments/' + key + '/likes').transaction((curr) => (curr || 0) + 1);
+            playSound();
+        }
+
+        let titleClickCount = 0;
+        document.getElementById('guestbook-title').addEventListener('click', () => {
+            titleClickCount++;
+            if (titleClickCount === 3) { document.getElementById('admin-modal').classList.remove('hidden'); titleClickCount = 0; }
+        });
+
+        function checkAdmin() {
+            if (document.getElementById('admin-pass').value === 'meme2003') {
+                isAdmin = true;
+                document.getElementById('admin-login-section').classList.add('hidden');
+                document.getElementById('admin-panel-section').classList.remove('hidden');
+                alert('أهلاً بك يا زعيم!');
+                loadComments();
+                loadGallery();
+            } else { alert('كلمة السر خطأ!'); }
+        }
+        
+        function deleteComment(key) { if (confirm('حذف نهائي؟')) db.ref('comments/' + key).remove(); }
+        
+        function deleteCommentFromModal() {
+            const key = document.getElementById('edit-id').value;
+            if (confirm('هل أنت متأكد أنك تريد حذف تعليقك؟')) {
+                db.ref('comments/' + key).remove().then(() => {
+                    document.getElementById('edit-modal').classList.add('hidden');
+                });
+            }
+        }
+
+        function openEditModal(key, name, msg, likes, avatarIdx, timestamp) {
+            document.getElementById('edit-modal').classList.remove('hidden'); 
+            document.getElementById('edit-id').value = key; 
+            document.getElementById('edit-name').value = name; 
+            document.getElementById('edit-msg').value = msg;
+            editAvatarIndex = avatarIdx || 0;
+            renderAvatarSelection('edit-avatar-grid', (idx) => editAvatarIndex = idx, editAvatarIndex);
+            const likesField = document.getElementById('admin-likes-field');
+            if(isAdmin) { likesField.classList.remove('hidden'); document.getElementById('edit-likes').value = likes; } else { likesField.classList.add('hidden'); document.getElementById('edit-likes').value = likes; }
+        }
+        
+        function saveEdit() {
+            const updates = { name: document.getElementById('edit-name').value, message: document.getElementById('edit-msg').value, avatarIndex: editAvatarIndex };
+            if(isAdmin) { updates.likes = parseInt(document.getElementById('edit-likes').value); }
+            db.ref('comments/' + document.getElementById('edit-id').value).update(updates).then(() => document.getElementById('edit-modal').classList.add('hidden'));
+        }
+        function playSound() { new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU").play().catch(e=>{}); }
     </script>
 </body>
 </html>
