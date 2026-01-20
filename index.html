@@ -56,11 +56,10 @@
         .avatar-container { border: 4px solid transparent; transition: all 0.2s; background-color: #f3f4f6; cursor: pointer; width: 100%; aspect-ratio: 1/1; max-width: 80px; margin: 0 auto; }
         .avatar-option input:checked + .avatar-container { border-color: #000; transform: scale(1.1); box-shadow: 4px 4px 0px #000; z-index: 10; background-color: #fff; }
         
-        /* أدوات التحكم للأدمن (مخفية افتراضياً) */
+        /* أدوات التحكم للأدمن */
         .comment-admin-btns { display: none; }
         .msg-delete-btn { display: none; }
 
-        /* إظهار أدوات التحكم عند تفعيل الكلاس */
         body.admin-active .comment-admin-btns { 
             display: flex; 
             flex-direction: column;
@@ -71,7 +70,6 @@
             z-index: 20;
         }
         
-        /* زر حذف رسائل الشات */
         body.admin-active .msg-delete-btn { 
             display: flex; 
             position: absolute; 
@@ -101,13 +99,12 @@
         #commentsList::-webkit-scrollbar, #chatMessages::-webkit-scrollbar { width: 6px; }
         #commentsList::-webkit-scrollbar-thumb, #chatMessages::-webkit-scrollbar-thumb { background: #000; border-radius: 4px; }
 
-        /* الشات */
         #chatFab { position: fixed; bottom: 100px; right: 20px; z-index: 50; touch-action: none; transition: transform 0.1s; }
+        
         .chat-bubble { border: 3px solid #000; color: #000; padding: 8px 12px; font-weight: bold; position: relative; }
         .chat-bubble-me { background-color: #22CCFF; border-radius: 15px 15px 0 15px; margin-left: auto; }
         .chat-bubble-other { border-radius: 15px 15px 15px 0; margin-right: auto; }
 
-        /* لوحة الأدمن */
         .admin-box { @apply border-4 border-black bg-gray-100 p-4 mb-4 shadow-hard rounded-lg; }
         .admin-input { @apply w-full bg-white border-2 border-black text-black p-2 mb-2 font-bold outline-none focus:bg-yellow-100 rounded text-lg; }
         .admin-label { @apply text-black font-black block mb-2 text-lg border-b-4 border-brand-yellow pb-1 inline-block; }
@@ -215,17 +212,27 @@
                 <div id="guestbookTitle" class="absolute -top-5 left-1/2 -translate-x-1/2 bg-brand-yellow px-4 py-1 border-4 border-black font-black rotate-1 text-black cursor-pointer hover:scale-105 transition-transform select-none">
                     ساحة الزوار 💬
                 </div>
-                
                 <div id="commentsList" class="space-y-4 mt-6 max-h-80 overflow-y-auto p-2">
                     <div class="text-center text-gray-500 font-bold loading-msg">جاري الاتصال بقاعدة البيانات... ⏳</div>
                 </div>
-
                 <button onclick="openCommentModal()" class="btn-action w-full mt-6 bg-black text-white border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all flex items-center justify-center gap-2">
                     <i class="fa-solid fa-pen-nib"></i> أضف تعليقك
                 </button>
             </div>
         </div>
     </main>
+
+    <footer class="w-full bg-white border-t-4 border-black py-10 relative z-20">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="flex justify-center gap-6 mb-8 text-3xl">
+                <a href="https://Instagram.com/misho_64" target="_blank" class="social-btn w-14 h-14 flex items-center justify-center bg-brand-purple text-white border-4 border-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all rounded-full"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/mashal-said" target="_blank" class="social-btn w-14 h-14 flex items-center justify-center bg-brand-blue text-white border-4 border-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all rounded-full"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+            <div class="bg-black text-white py-4 px-6 border-4 border-black rotate-1 shadow-hard hover:rotate-0 transition-transform inline-block">
+                <p class="font-bold text-sm" style="font-family: 'Rubik', sans-serif;"><span class="text-brand-yellow">Powered by:</span> Mo64 Ai <span class="mx-2">|</span> <span class="text-brand-pink">Made by:</span> 64Group</p>
+            </div>
+        </div>
+    </footer>
 
     <div class="fixed bottom-6 right-6 z-50 floating-fab group">
         <div id="hypeCount" class="absolute -top-3 -left-3 bg-red-500 text-white font-black border-2 border-black px-2 py-1 rounded-full text-sm z-20 shadow-hard-hover">0</div>
@@ -830,21 +837,13 @@
         }
 
         function deleteComment(key) { if(confirm("حذف نهائي؟")) db.ref('comments/' + key).remove(); }
-        
-        // دالة التعديل (الاسم، النص، اللايكات)
         function editComment(key, oldName, oldText, oldLikes) {
             const newName = prompt("تعديل الاسم:", oldName);
-            if(newName !== null) {
+            if(newName) {
                 const newText = prompt("تعديل النص:", oldText);
-                if(newText !== null) {
+                if(newText) {
                     const newLikes = prompt("تعديل عدد اللايكات:", oldLikes);
-                    if (newLikes !== null) {
-                        db.ref('comments/' + key).update({
-                            name: newName,
-                            text: newText,
-                            likes: parseInt(newLikes) || 0
-                        });
-                    }
+                    if (newLikes !== null) db.ref('comments/' + key).update({ name: newName, text: newText, likes: parseInt(newLikes) || 0 });
                 }
             }
         }
