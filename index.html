@@ -55,8 +55,41 @@
         .pixel-svg { width: 100%; height: 100%; display: block; shape-rendering: crispEdges; }
         .avatar-container { border: 4px solid transparent; transition: all 0.2s; background-color: #f3f4f6; cursor: pointer; width: 100%; aspect-ratio: 1/1; max-width: 80px; margin: 0 auto; }
         .avatar-option input:checked + .avatar-container { border-color: #000; transform: scale(1.1); box-shadow: 4px 4px 0px #000; z-index: 10; background-color: #fff; }
-        .admin-controls { display: none; }
-        body.admin-active .admin-controls { display: flex; }
+        
+        /* أدوات التحكم للأدمن (مخفية افتراضياً) */
+        .comment-admin-btns { display: none; }
+        .msg-delete-btn { display: none; }
+
+        /* إظهار أدوات التحكم عند تفعيل الكلاس */
+        body.admin-active .comment-admin-btns { 
+            display: flex; 
+            flex-direction: column;
+            gap: 5px;
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            z-index: 20;
+        }
+        
+        /* زر حذف رسائل الشات */
+        body.admin-active .msg-delete-btn { 
+            display: flex; 
+            position: absolute; 
+            top: -8px; 
+            left: -8px; 
+            background: #ff0000; 
+            color: white; 
+            border: 2px solid black; 
+            width: 18px; 
+            height: 18px; 
+            border-radius: 50%; 
+            font-size: 10px; 
+            align-items: center; 
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            font-weight: bold;
+        }
         
         @keyframes swing { 0% { transform: rotate(var(--r)); } 50% { transform: rotate(calc(var(--r) + 2deg)); } 100% { transform: rotate(var(--r)); } }
         .hanging-photo:hover { animation: swing 1s ease-in-out infinite; }
@@ -68,40 +101,17 @@
         #commentsList::-webkit-scrollbar, #chatMessages::-webkit-scrollbar { width: 6px; }
         #commentsList::-webkit-scrollbar-thumb, #chatMessages::-webkit-scrollbar-thumb { background: #000; border-radius: 4px; }
 
-        /* ستايل أيقونة الشات */
+        /* الشات */
         #chatFab { position: fixed; bottom: 100px; right: 20px; z-index: 50; touch-action: none; transition: transform 0.1s; }
-        
-        /* ستايل فقاعات الشات */
         .chat-bubble { border: 3px solid #000; color: #000; padding: 8px 12px; font-weight: bold; position: relative; }
         .chat-bubble-me { background-color: #22CCFF; border-radius: 15px 15px 0 15px; margin-left: auto; }
         .chat-bubble-other { border-radius: 15px 15px 15px 0; margin-right: auto; }
-        
-        /* زر الحذف في الشات */
-        .msg-delete-btn { 
-            display: none; 
-            position: absolute; 
-            top: -10px; 
-            left: -10px; 
-            background: #ff0000; 
-            color: white; 
-            border: 2px solid black; 
-            width: 20px; 
-            height: 20px; 
-            border-radius: 50%; 
-            font-size: 10px; 
-            align-items: center; 
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-        }
-        body.admin-active .msg-delete-btn { display: flex; }
 
-        /* ستايل مربعات الأدمن */
+        /* لوحة الأدمن */
         .admin-box { @apply border-4 border-black bg-gray-100 p-4 mb-4 shadow-hard rounded-lg; }
         .admin-input { @apply w-full bg-white border-2 border-black text-black p-2 mb-2 font-bold outline-none focus:bg-yellow-100 rounded text-lg; }
         .admin-label { @apply text-black font-black block mb-2 text-lg border-b-4 border-brand-yellow pb-1 inline-block; }
 
-        /* أنيميشن القلوب */
         .heart-svg-btn { transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.5)); }
         .heart-svg-btn:active { transform: scale(0.8); }
         .like-bounce { animation: like-bounce 0.4s; }
@@ -202,12 +212,25 @@
 
         <div class="w-full max-w-2xl px-6 mb-12">
             <div class="bg-white border-4 border-black p-6 shadow-hard relative mt-4">
-                <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-brand-yellow px-4 py-1 border-4 border-black font-black rotate-1 text-black cursor-pointer hover:scale-105 transition-transform select-none">ساحة الزوار 💬</div>
-                <div id="commentsList" class="space-y-4 mt-6 max-h-80 overflow-y-auto p-2"><div class="text-center text-gray-500 font-bold loading-msg">جاري التحميل... ⏳</div></div>
-                <button onclick="openCommentModal()" class="btn-action w-full mt-6 bg-black text-white border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all flex items-center justify-center gap-2"><i class="fa-solid fa-pen-nib"></i> أضف تعليقك</button>
+                <div id="guestbookTitle" class="absolute -top-5 left-1/2 -translate-x-1/2 bg-brand-yellow px-4 py-1 border-4 border-black font-black rotate-1 text-black cursor-pointer hover:scale-105 transition-transform select-none">
+                    ساحة الزوار 💬
+                </div>
+                
+                <div id="commentsList" class="space-y-4 mt-6 max-h-80 overflow-y-auto p-2">
+                    <div class="text-center text-gray-500 font-bold loading-msg">جاري الاتصال بقاعدة البيانات... ⏳</div>
+                </div>
+
+                <button onclick="openCommentModal()" class="btn-action w-full mt-6 bg-black text-white border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-pen-nib"></i> أضف تعليقك
+                </button>
             </div>
         </div>
     </main>
+
+    <div class="fixed bottom-6 right-6 z-50 floating-fab group">
+        <div id="hypeCount" class="absolute -top-3 -left-3 bg-red-500 text-white font-black border-2 border-black px-2 py-1 rounded-full text-sm z-20 shadow-hard-hover">0</div>
+        <button id="hypeBtn" class="bg-brand-yellow w-20 h-20 rounded-full border-4 border-black shadow-hard group-hover:scale-110 transition-all flex items-center justify-center text-4xl active:bg-white">🔥</button>
+    </div>
 
     <div id="chatFab" class="hidden cursor-move hover:scale-110 transition-transform">
         <button onclick="toggleGlobalChat()" class="bg-brand-purple w-16 h-16 rounded-full border-4 border-black shadow-hard flex items-center justify-center text-3xl text-white"><i class="fa-solid fa-comments"></i></button>
@@ -223,84 +246,6 @@
             <div class="p-3 border-t-4 border-black bg-white flex gap-2">
                 <input type="text" id="globalChatInput" placeholder="اكتب رسالة..." class="flex-1 border-4 border-black p-2 font-bold outline-none">
                 <button onclick="sendGlobalMessage()" class="bg-brand-yellow border-4 border-black p-2 px-4 font-black hover:bg-yellow-400"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-        </div>
-    </div>
-
-    <div class="fixed bottom-6 left-6 z-50 floating-fab group">
-        <div id="hypeCount" class="absolute -top-3 -right-3 bg-red-500 text-white font-black border-2 border-black px-2 py-1 rounded-full text-sm z-20 shadow-hard-hover">0</div>
-        <button id="hypeBtn" class="bg-brand-yellow w-20 h-20 rounded-full border-4 border-black shadow-hard group-hover:scale-110 transition-all flex items-center justify-center text-4xl active:bg-white">🔥</button>
-    </div>
-
-    <div id="welcomeModal" class="fixed inset-0 bg-black/80 z-[300] hidden flex items-center justify-center p-6 backdrop-blur-sm">
-        <div class="bg-white border-4 border-black shadow-hard p-8 w-full max-w-md text-center relative">
-            <h2 id="welcomeTitle" class="text-3xl font-black mb-4"></h2>
-            <p id="welcomeBody" class="text-lg font-bold text-gray-700 mb-8 leading-relaxed"></p>
-            <button onclick="closeWelcome()" class="w-full bg-black text-white border-4 border-black p-4 font-black text-xl hover:bg-brand-blue hover:text-black">اشطا، فهمت! 🚀</button>
-        </div>
-    </div>
-
-    <div id="globalMessageModal" class="fixed inset-0 bg-black/90 z-[400] hidden flex items-center justify-center p-6 backdrop-blur-sm">
-        <div class="bg-brand-yellow border-4 border-black shadow-hard p-8 w-full max-w-md text-center relative rotate-1">
-            <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 font-bold border-2 border-white">📢 رسالة من مشعل</div>
-            <p id="globalMessageBody" class="text-2xl font-black text-black mb-8 leading-relaxed mt-4"></p>
-            <button onclick="document.getElementById('globalMessageModal').classList.add('hidden')" class="w-full bg-white text-black border-4 border-black p-3 font-black text-xl hover:bg-gray-100">تم الاستلام 🫡</button>
-        </div>
-    </div>
-
-    <div id="infoModal" class="fixed inset-0 bg-black/80 z-[300] hidden flex items-center justify-center p-6 backdrop-blur-sm">
-        <div class="bg-white border-4 border-black shadow-hard p-8 w-full max-w-md text-center relative">
-            <h2 id="infoTitle" class="text-3xl font-black mb-4"></h2>
-            <p id="infoBody" class="text-lg font-bold text-gray-700 mb-8 leading-relaxed"></p>
-            <button onclick="closeInfo()" class="w-full bg-black text-white border-4 border-black p-4 font-black text-xl hover:bg-brand-blue hover:text-black">تمام 😂</button>
-        </div>
-    </div>
-
-    <div id="contactModal" class="fixed inset-0 bg-black/80 z-[200] hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white border-4 border-black shadow-hard p-6 w-full max-w-sm relative">
-            <button onclick="closeContactModal()" class="absolute -top-4 -right-4 bg-red-500 text-white w-10 h-10 border-4 border-black font-black hover:scale-110">X</button>
-            <h2 class="text-2xl font-black text-center mb-6 bg-brand-blue border-2 border-black inline-block px-4 mx-auto rotate-1">تواصل معي 📞</h2>
-            <div class="flex flex-col gap-3">
-                <a href="https://wa.me/201551179695" target="_blank" class="flex items-center gap-4 bg-[#25D366] border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-whatsapp text-3xl"></i> <span class="text-xl">WhatsApp</span></a>
-                <a href="https://Instagram.com/misho_64" target="_blank" class="flex items-center gap-4 bg-gradient-to-r from-purple-500 to-pink-500 border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-instagram text-3xl"></i> <span class="text-xl">Instagram</span></a>
-                <a href="https://www.snapchat.com/add/misho_64" target="_blank" class="flex items-center gap-4 bg-[#FFFC00] border-4 border-black p-3 font-black text-black hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-snapchat text-3xl"></i> <span class="text-xl">Snapchat</span></a>
-                <a href="https://www.facebook.com/share/1A57dR6k74/" target="_blank" class="flex items-center gap-4 bg-[#1877F2] border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-facebook text-3xl"></i> <span class="text-xl">Facebook</span></a>
-                <a href="https://x.com/misho_64" target="_blank" class="flex items-center gap-4 bg-black border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-x-twitter text-3xl"></i> <span class="text-xl">Twitter / X</span></a>
-                <a href="https://t.me/misho_64" target="_blank" class="flex items-center gap-4 bg-[#0088cc] border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-telegram text-3xl"></i> <span class="text-xl">Telegram</span></a>
-            </div>
-        </div>
-    </div>
-
-    <div id="commentModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white border-4 border-black shadow-hard p-6 w-full max-w-md relative">
-            <button onclick="closeCommentModal()" class="absolute -top-4 -right-4 bg-red-500 text-white w-10 h-10 border-4 border-black font-black hover:scale-110">X</button>
-            <h2 class="text-2xl font-black text-center mb-6 bg-brand-yellow border-2 border-black inline-block px-4 mx-auto -rotate-2">اختر شخصيتك 👾</h2>
-            <div id="step1">
-                <div class="mb-4">
-                    <label class="block font-bold mb-2">اسمك المستعار:</label>
-                    <input type="text" id="commentName" maxlength="11" placeholder="اكتب اسمك (11 حرف)" class="w-full bg-gray-100 border-4 border-black p-2 font-bold outline-none focus:bg-brand-blue/20">
-                </div>
-                <label class="block font-bold mb-2">الشخصية (بكسل آرت):</label>
-                <div class="grid grid-cols-3 gap-3 mb-6">
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden" checked><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#FF90E8"/><path d="M6 3H12V6H14V9H12V11H10V14H6V11H4V9H6V3Z" fill="#4ADE80"/><path d="M10 4H11V5H10V4Z" fill="black"/><path d="M10 7H13V8H10V7Z" fill="white"/><path d="M4 9H6V10H4V9Z" fill="#166534"/></svg></div></label>
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#22CCFF"/><path d="M4 3H6V6H10V3H12V6H13V10H12V13H4V10H3V6H4V3Z" fill="white"/><path d="M5 4H6V6H5V4Z" fill="#F472B6"/><path d="M10 4H11V6H10V4Z" fill="#F472B6"/><path d="M5 8H6V9H5V8Z" fill="black"/><path d="M10 8H11V9H10V8Z" fill="black"/><path d="M7 10H9V11H7V10Z" fill="#F472B6"/></svg></div></label>
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#FFDE00"/><path d="M3 3H6V6H10V3H13V6H14V10H12V13H4V10H2V6H3V3Z" fill="#F97316"/><path d="M6 10H10V13H6V10Z" fill="white"/><path d="M4 7H5V8H4V7Z" fill="black"/><path d="M11 7H12V8H11V7Z" fill="black"/><path d="M7 11H9V12H7V11Z" fill="black"/></svg></div></label>
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#FF90E8"/><path d="M2 3H6V6H10V3H14V6H13V11H11V13H5V11H3V6H2V3Z" fill="#9CA3AF"/><path d="M3 4H5V6H3V4Z" fill="#F472B6"/><path d="M11 4H13V6H11V4Z" fill="#F472B6"/><path d="M5 8H6V9H5V8Z" fill="black"/><path d="M10 8H11V9H10V8Z" fill="black"/><path d="M7 11H9V12H7V11Z" fill="black"/><path d="M4 9H2V10H4V9Z" fill="black"/><path d="M12 9H14V10H12V9Z" fill="black"/></svg></div></label>
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#9D4EDD"/><path d="M4 4H12V6H13V9H12V13H4V9H3V6H4V4Z" fill="#FCD34D"/><path d="M4 3H12V5H4V3Z" fill="black"/><path d="M3 5H4V9H3V5Z" fill="black"/><path d="M12 5H13V9H12V5Z" fill="black"/><path d="M5 7H11V9H5V7Z" fill="black"/></svg></div></label>
-                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#22CCFF"/><path d="M4 4H12V13H4V4Z" fill="#FCD34D"/><path d="M3 3H13V6H12V4H4V6H3V3Z" fill="#EC4899"/><path d="M2 6H4V13H2V6Z" fill="#EC4899"/><path d="M12 6H14V13H12V6Z" fill="#EC4899"/><path d="M5 7H6V9H5V7Z" fill="black"/><path d="M10 7H11V9H10V7Z" fill="black"/><path d="M7 11H9V12H7V11Z" fill="#EC4899"/></svg></div></label>
-                </div>
-                <button onclick="goToStep2()" class="btn-action w-full bg-brand-blue text-black border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all">التالي <i class="fa-solid fa-arrow-left mr-2"></i></button>
-            </div>
-            <div id="step2" class="hidden">
-                 <div class="flex items-center gap-3 mb-4 p-3 bg-gray-100 border-4 border-black">
-                    <div id="selectedAvatarPreview" class="w-12 h-12 border-2 border-black bg-white overflow-hidden"></div>
-                    <span id="selectedNamePreview" class="font-black"></span>
-                </div>
-                <textarea id="commentText" rows="3" maxlength="20" placeholder="اكتب تعليقك (أقصى حد 20 حرف)..." class="w-full bg-gray-100 border-4 border-black p-2 font-bold outline-none focus:bg-brand-pink/20 mb-4 resize-none"></textarea>
-                <div class="flex gap-2">
-                    <button onclick="submitComment()" class="btn-action flex-1 bg-brand-yellow text-black border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all">نشر 🚀</button>
-                    <button onclick="backToStep1()" class="btn-action bg-gray-200 text-black border-4 border-black p-3 font-black hover:bg-gray-300">رجوع</button>
-                </div>
             </div>
         </div>
     </div>
@@ -354,22 +299,87 @@
                     </div>
 
                 </div>
-                <button onclick="closeAdmin()" class="bg-red-600 text-white border-4 border-black px-4 py-2 hover:bg-red-500 w-full font-black shadow-hard">خروج</button>
+                
+                <div class="flex gap-2">
+                    <button onclick="hideAdminPanel()" class="flex-1 bg-gray-500 text-white border-4 border-black px-4 py-2 hover:bg-gray-400 font-black shadow-hard">➖ إخفاء اللوحة</button>
+                    <button onclick="logoutAdmin()" class="flex-1 bg-red-600 text-white border-4 border-black px-4 py-2 hover:bg-red-500 font-black shadow-hard">🔒 تسجيل خروج</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <footer class="w-full bg-white border-t-4 border-black py-10 relative z-20">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <div class="flex justify-center gap-6 mb-8 text-3xl">
-                <a href="https://Instagram.com/misho_64" target="_blank" class="social-btn w-14 h-14 flex items-center justify-center bg-brand-purple text-white border-4 border-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all rounded-full"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://www.linkedin.com/in/mashal-said" target="_blank" class="social-btn w-14 h-14 flex items-center justify-center bg-brand-blue text-white border-4 border-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all rounded-full"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-            <div class="bg-black text-white py-4 px-6 border-4 border-black rotate-1 shadow-hard hover:rotate-0 transition-transform inline-block">
-                <p class="font-bold text-sm" style="font-family: 'Rubik', sans-serif;"><span class="text-brand-yellow">Powered by:</span> Mo64 Ai <span class="mx-2">|</span> <span class="text-brand-pink">Made by:</span> 64Group</p>
+    <div id="infoModal" class="fixed inset-0 bg-black/80 z-[300] hidden flex items-center justify-center p-6 backdrop-blur-sm">
+        <div class="bg-white border-4 border-black shadow-hard p-8 w-full max-w-md text-center relative">
+            <h2 id="infoTitle" class="text-3xl font-black mb-4"></h2>
+            <p id="infoBody" class="text-lg font-bold text-gray-700 mb-8 leading-relaxed"></p>
+            <button onclick="closeInfo()" class="w-full bg-black text-white border-4 border-black p-4 font-black text-xl hover:bg-brand-blue hover:text-black">تمام 😂</button>
+        </div>
+    </div>
+
+    <div id="welcomeModal" class="fixed inset-0 bg-black/80 z-[300] hidden flex items-center justify-center p-6 backdrop-blur-sm">
+        <div class="bg-white border-4 border-black shadow-hard p-8 w-full max-w-md text-center relative">
+            <h2 id="welcomeTitle" class="text-3xl font-black mb-4"></h2>
+            <p id="welcomeBody" class="text-lg font-bold text-gray-700 mb-8 leading-relaxed"></p>
+            <button onclick="closeWelcome()" class="w-full bg-black text-white border-4 border-black p-4 font-black text-xl hover:bg-brand-blue hover:text-black">اشطا، فهمت! 🚀</button>
+        </div>
+    </div>
+
+    <div id="globalMessageModal" class="fixed inset-0 bg-black/90 z-[400] hidden flex items-center justify-center p-6 backdrop-blur-sm">
+        <div class="bg-brand-yellow border-4 border-black shadow-hard p-8 w-full max-w-md text-center relative rotate-1">
+            <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 font-bold border-2 border-white">📢 رسالة من مشعل</div>
+            <p id="globalMessageBody" class="text-2xl font-black text-black mb-8 leading-relaxed mt-4"></p>
+            <button onclick="document.getElementById('globalMessageModal').classList.add('hidden')" class="w-full bg-white text-black border-4 border-black p-3 font-black text-xl hover:bg-gray-100">تم الاستلام 🫡</button>
+        </div>
+    </div>
+
+    <div id="contactModal" class="fixed inset-0 bg-black/80 z-[200] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white border-4 border-black shadow-hard p-6 w-full max-w-sm relative">
+            <button onclick="closeContactModal()" class="absolute -top-4 -right-4 bg-red-500 text-white w-10 h-10 border-4 border-black font-black hover:scale-110">X</button>
+            <h2 class="text-2xl font-black text-center mb-6 bg-brand-blue border-2 border-black inline-block px-4 mx-auto rotate-1">تواصل معي 📞</h2>
+            <div class="flex flex-col gap-3">
+                <a href="https://wa.me/201551179695" target="_blank" class="flex items-center gap-4 bg-[#25D366] border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-whatsapp text-3xl"></i> <span class="text-xl">WhatsApp</span></a>
+                <a href="https://Instagram.com/misho_64" target="_blank" class="flex items-center gap-4 bg-gradient-to-r from-purple-500 to-pink-500 border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-instagram text-3xl"></i> <span class="text-xl">Instagram</span></a>
+                <a href="https://www.snapchat.com/add/misho_64" target="_blank" class="flex items-center gap-4 bg-[#FFFC00] border-4 border-black p-3 font-black text-black hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-snapchat text-3xl"></i> <span class="text-xl">Snapchat</span></a>
+                <a href="https://www.facebook.com/share/1A57dR6k74/" target="_blank" class="flex items-center gap-4 bg-[#1877F2] border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-facebook text-3xl"></i> <span class="text-xl">Facebook</span></a>
+                <a href="https://x.com/misho_64" target="_blank" class="flex items-center gap-4 bg-black border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-x-twitter text-3xl"></i> <span class="text-xl">Twitter / X</span></a>
+                <a href="https://t.me/misho_64" target="_blank" class="flex items-center gap-4 bg-[#0088cc] border-4 border-black p-3 font-black text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none shadow-[4px_4px_0px_#000] transition-all"><i class="fa-brands fa-telegram text-3xl"></i> <span class="text-xl">Telegram</span></a>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <div id="commentModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white border-4 border-black shadow-hard p-6 w-full max-w-md relative">
+            <button onclick="closeCommentModal()" class="absolute -top-4 -right-4 bg-red-500 text-white w-10 h-10 border-4 border-black font-black hover:scale-110">X</button>
+            <h2 class="text-2xl font-black text-center mb-6 bg-brand-yellow border-2 border-black inline-block px-4 mx-auto -rotate-2">اختر شخصيتك 👾</h2>
+            <div id="step1">
+                <div class="mb-4">
+                    <label class="block font-bold mb-2">اسمك المستعار:</label>
+                    <input type="text" id="commentName" maxlength="11" placeholder="اكتب اسمك (11 حرف)" class="w-full bg-gray-100 border-4 border-black p-2 font-bold outline-none focus:bg-brand-blue/20">
+                </div>
+                <label class="block font-bold mb-2">الشخصية (بكسل آرت):</label>
+                <div class="grid grid-cols-3 gap-3 mb-6">
+                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden" checked><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#FF90E8"/><path d="M6 3H12V6H14V9H12V11H10V14H6V11H4V9H6V3Z" fill="#4ADE80"/><path d="M10 4H11V5H10V4Z" fill="black"/><path d="M10 7H13V8H10V7Z" fill="white"/><path d="M4 9H6V10H4V9Z" fill="#166534"/></svg></div></label>
+                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#22CCFF"/><path d="M4 3H6V6H10V3H12V6H13V10H12V13H4V10H3V6H4V3Z" fill="white"/><path d="M5 4H6V6H5V4Z" fill="#F472B6"/><path d="M10 4H11V6H10V4Z" fill="#F472B6"/><path d="M5 8H6V9H5V8Z" fill="black"/><path d="M10 8H11V9H10V8Z" fill="black"/><path d="M7 10H9V11H7V10Z" fill="#F472B6"/></svg></div></label>
+                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#FFDE00"/><path d="M3 3H6V6H10V3H13V6H14V10H12V13H4V10H2V6H3V3Z" fill="#F97316"/><path d="M6 10H10V13H6V10Z" fill="white"/><path d="M4 7H5V8H4V7Z" fill="black"/><path d="M11 7H12V8H11V7Z" fill="black"/><path d="M7 11H9V12H7V11Z" fill="black"/></svg></div></label>
+                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#FF90E8"/><path d="M2 3H6V6H10V3H14V6H13V11H11V13H5V11H3V6H2V3Z" fill="#9CA3AF"/><path d="M3 4H5V6H3V4Z" fill="#F472B6"/><path d="M11 4H13V6H11V4Z" fill="#F472B6"/><path d="M5 8H6V9H5V8Z" fill="black"/><path d="M10 8H11V9H10V8Z" fill="black"/><path d="M7 11H9V12H7V11Z" fill="black"/><path d="M4 9H2V10H4V9Z" fill="black"/><path d="M12 9H14V10H12V9Z" fill="black"/></svg></div></label>
+                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#9D4EDD"/><path d="M4 4H12V6H13V9H12V13H4V9H3V6H4V4Z" fill="#FCD34D"/><path d="M4 3H12V5H4V3Z" fill="black"/><path d="M3 5H4V9H3V5Z" fill="black"/><path d="M12 5H13V9H12V5Z" fill="black"/><path d="M5 7H11V9H5V7Z" fill="black"/></svg></div></label>
+                    <label class="avatar-option cursor-pointer relative"><input type="radio" name="avatar" class="hidden"><div class="avatar-container"><svg class="pixel-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" fill="#22CCFF"/><path d="M4 4H12V13H4V4Z" fill="#FCD34D"/><path d="M3 3H13V6H12V4H4V6H3V3Z" fill="#EC4899"/><path d="M2 6H4V13H2V6Z" fill="#EC4899"/><path d="M12 6H14V13H12V6Z" fill="#EC4899"/><path d="M5 7H6V9H5V7Z" fill="black"/><path d="M10 7H11V9H10V7Z" fill="black"/><path d="M7 11H9V12H7V11Z" fill="#EC4899"/></svg></div></label>
+                </div>
+                <button onclick="goToStep2()" class="btn-action w-full bg-brand-blue text-black border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all">التالي <i class="fa-solid fa-arrow-left mr-2"></i></button>
+            </div>
+            <div id="step2" class="hidden">
+                 <div class="flex items-center gap-3 mb-4 p-3 bg-gray-100 border-4 border-black">
+                    <div id="selectedAvatarPreview" class="w-12 h-12 border-2 border-black bg-white overflow-hidden"></div>
+                    <span id="selectedNamePreview" class="font-black"></span>
+                </div>
+                <textarea id="commentText" rows="3" maxlength="20" placeholder="اكتب تعليقك (أقصى حد 20 حرف)..." class="w-full bg-gray-100 border-4 border-black p-2 font-bold outline-none focus:bg-brand-pink/20 mb-4 resize-none"></textarea>
+                <div class="flex gap-2">
+                    <button onclick="submitComment()" class="btn-action flex-1 bg-brand-yellow text-black border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all">نشر 🚀</button>
+                    <button onclick="backToStep1()" class="btn-action bg-gray-200 text-black border-4 border-black p-3 font-black hover:bg-gray-300">رجوع</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // دوال النوافذ
@@ -379,13 +389,27 @@
         function closeCommentModal() { document.getElementById('commentModal').classList.add('hidden'); }
         function backToStep1() { document.getElementById('step1').classList.remove('hidden'); document.getElementById('step2').classList.add('hidden'); }
         function closeWelcome() { document.getElementById('welcomeModal').classList.add('hidden'); }
+        
+        // إغلاق الأدمن (إلغاء)
         function closeAdmin() { 
             document.getElementById('adminModal').classList.add('hidden'); 
             document.getElementById('adminLogin').classList.remove('hidden');
             document.getElementById('adminPanel').classList.add('hidden');
             document.getElementById('adminPass').value = '';
-            document.body.classList.remove('admin-active'); // إخفاء أزرار الحذف
         }
+
+        // إخفاء اللوحة فقط (مع إبقاء الصلاحيات)
+        function hideAdminPanel() {
+            document.getElementById('adminModal').classList.add('hidden');
+        }
+
+        // تسجيل الخروج الكامل
+        function logoutAdmin() {
+            closeAdmin();
+            document.body.classList.remove('admin-active');
+            alert("تم تسجيل الخروج 🔒");
+        }
+
         function closeInfo() { document.getElementById('infoModal').classList.add('hidden'); }
 
         function showWorkInProgress(type) {
@@ -455,7 +479,6 @@
             popup: { enabled: false, text: "رسالة مهمة!", delay: 3 }
         };
 
-        // توليد ألوان فريدة للأشخاص
         function getUserColor(id) {
             const colors = ['#FFDE00', '#FF90E8', '#9D4EDD', '#84cc16', '#f97316', '#06b6d4', '#f43f5e'];
             let hash = 0;
@@ -487,35 +510,19 @@
                     const msg = snapshot.val();
                     const key = snapshot.key;
                     const isMe = msg.senderID === localStorage.getItem('mo64_uid');
-                    
                     const div = document.createElement('div');
                     const color = getUserColor(msg.senderID);
-                    
-                    // تصميم الرسالة مع زر الحذف المخفي
                     div.className = `chat-bubble mb-2 max-w-[80%] break-words ${isMe ? 'chat-bubble-me' : 'chat-bubble-other'}`;
-                    
-                    if(isMe) {
-                        div.style.backgroundColor = '#22CCFF';
-                    } else {
-                        div.style.backgroundColor = color;
-                    }
-                    
-                    div.innerHTML = `
-                        ${msg.text}
-                        <div class="msg-delete-btn" onclick="deleteSingleMessage('${key}', this)">X</div>
-                    `;
-                    
+                    div.style.backgroundColor = isMe ? '#22CCFF' : color;
+                    div.innerHTML = `${msg.text}<div class="msg-delete-btn" onclick="deleteSingleMessage('${key}', this)">X</div>`;
                     chatContainer.appendChild(div);
                     chatContainer.scrollTop = chatContainer.scrollHeight;
                     if(!isMe) msgSound.play().catch(()=>{});
                 });
 
-                // حذف الرسالة من الواجهة عند حذفها من الداتابيس
                 db.ref('public_chat').on('child_removed', (snapshot) => {
-                    // تحديث الشات بإعادة تحميل بسيط أو إخفاء العنصر (سنترك التحديث التلقائي)
-                    // في أبسط صورة: سنقوم بمسح المحتوى وإعادة التحميل، لكن هنا سنعتمد على التحديث القادم
                     const chatContainer = document.getElementById('chatMessages');
-                    chatContainer.innerHTML = ''; // تفريغ وإعادة تحميل (لضمان الترتيب)
+                    chatContainer.innerHTML = ''; 
                     db.ref('public_chat').limitToLast(50).once('value', (snap) => {
                         snap.forEach((child) => {
                             const msg = child.val();
@@ -532,7 +539,6 @@
                     });
                 });
                 
-                // كود التعليقات القديم (كما هو)
                 const commentsList = document.getElementById('commentsList');
                 const commentsRef = db.ref('comments');
                 commentsRef.on('value', (snapshot) => {
@@ -592,9 +598,6 @@
             }
         }
 
-        // -------------------------
-        // دوال لوحة الأدمن (محدثة بالكامل)
-        // -------------------------
         function updateAdminUI() {
             updateToggleBtn('toggleWelcomeBtn', siteSettings.welcome?.enabled);
             updateToggleBtn('toggleChatBtn', siteSettings.chat?.enabled);
@@ -643,7 +646,6 @@
             alert("تم نشر الرسالة (ستظهر للزوار الجدد) 📢");
         }
 
-        // حذف كل الشات
         function deleteAllChat() {
             if(confirm("⚠️ هل أنت متأكد؟ سيتم حذف كل المحادثة ولا يمكن التراجع!")) {
                 db.ref('public_chat').remove()
@@ -652,7 +654,6 @@
             }
         }
 
-        // حذف رسالة واحدة
         function deleteSingleMessage(key, btnElement) {
             if(confirm("حذف هذه الرسالة؟")) {
                 db.ref('public_chat/' + key).remove();
@@ -660,13 +661,36 @@
             }
         }
 
+        // ===============================================
+        //  TRIGGER LOGIC: 3 Clicks on "Guestbook Title"
+        // ===============================================
+        let clickCount = 0; 
+        let clickTimer;
+        document.getElementById('guestbookTitle').addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 1) clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+            if (clickCount === 3) { 
+                clearTimeout(clickTimer); 
+                clickCount = 0; 
+                document.getElementById('adminModal').classList.remove('hidden'); 
+            }
+        });
+
+        // Also keep the name trigger as a backup or allow access if already logged in
         document.getElementById('adminTriggerBtn').addEventListener('click', () => {
-            document.getElementById('adminModal').classList.remove('hidden');
+            // If already active, show panel directly
+            if(document.body.classList.contains('admin-active')) {
+                document.getElementById('adminModal').classList.remove('hidden');
+                document.getElementById('adminLogin').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+            } else {
+                document.getElementById('adminModal').classList.remove('hidden');
+            }
         });
 
         function checkAdmin() {
             if (document.getElementById('adminPass').value === "meme2003") {
-                document.body.classList.add('admin-active'); // تفعيل وضع الأدمن
+                document.body.classList.add('admin-active'); 
                 document.getElementById('adminLogin').classList.add('hidden');
                 document.getElementById('adminPanel').classList.remove('hidden');
                 updateAdminUI(); 
@@ -691,24 +715,31 @@
             initialLeft = rect.left; initialTop = rect.top;
             fab.style.bottom = 'auto'; fab.style.right = 'auto';
             fab.style.left = initialLeft + 'px'; fab.style.top = initialTop + 'px';
+            fab.style.transition = 'none';
             document.addEventListener('mousemove', drag); document.addEventListener('touchmove', drag, {passive: false});
             document.addEventListener('mouseup', endDrag); document.addEventListener('touchend', endDrag);
         }
         function drag(e) {
-            e.preventDefault(); isDragging = true;
-            let clientX = (e.type === 'touchmove') ? e.touches[0].clientX : e.clientX;
-            let clientY = (e.type === 'touchmove') ? e.touches[0].clientY : e.clientY;
+            let clientX, clientY;
+            if(e.type === 'touchmove') { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; } 
+            else { clientX = e.clientX; clientY = e.clientY; }
+            if (Math.abs(clientX - startX) > 5 || Math.abs(clientY - startY) > 5) {
+                isDragging = true;
+                e.preventDefault(); 
+            }
             fab.style.left = (initialLeft + clientX - startX) + 'px';
             fab.style.top = (initialTop + clientY - startY) + 'px';
         }
         function endDrag() {
             document.removeEventListener('mousemove', drag); document.removeEventListener('touchmove', drag);
             document.removeEventListener('mouseup', endDrag); document.removeEventListener('touchend', endDrag);
+            fab.style.transition = 'all 0.3s ease-out';
             const rect = fab.getBoundingClientRect();
             if (rect.left + rect.width / 2 < window.innerWidth / 2) fab.style.left = '20px';
             else fab.style.left = (window.innerWidth - rect.width - 20) + 'px';
             if(rect.top < 20) fab.style.top = '20px';
             if(rect.bottom > window.innerHeight - 20) fab.style.top = (window.innerHeight - rect.height - 20) + 'px';
+            setTimeout(() => { isDragging = false; }, 100);
         }
 
         function toggleGlobalChat() {
@@ -756,7 +787,24 @@
             const safeName = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             const heartSVG = getRandomHeartSVG();
-            const html = `<div class="comment-item flex gap-3 bg-white border-4 border-black p-3 shadow-[2px_2px_0px_#000] relative group" data-key="${key}"><div class="w-12 h-12 border-2 border-black bg-white overflow-hidden shrink-0">${avatarSVG}</div><div class="flex-1"><h4 class="comment-name font-black text-sm">${safeName}</h4><p class="comment-text text-sm font-bold text-gray-600 break-words">${safeText}</p></div><div class="flex flex-col items-center justify-center gap-1 ml-2"><div onclick="likeComment('${key}')">${heartSVG}</div><span class="text-xs font-black">${likes}</span></div><div class="admin-controls flex-col gap-2 absolute left-2 top-2"><button onclick="deleteComment('${key}')" class="bg-red-500 text-white w-6 h-6 border-2 border-black text-xs hover:scale-110"><i class="fa-solid fa-trash"></i></button><button onclick="editComment('${key}', '${safeName}', '${safeText}', ${likes})" class="bg-blue-500 text-white w-6 h-6 border-2 border-black text-xs hover:scale-110"><i class="fa-solid fa-pen"></i></button></div></div>`;
+            // أزرار التحكم مضافة هنا لكنها مخفية عبر CSS
+            const html = `
+                <div class="comment-item flex gap-3 bg-white border-4 border-black p-3 shadow-[2px_2px_0px_#000] relative group" data-key="${key}">
+                    <div class="comment-admin-btns">
+                        <button onclick="editComment('${key}', '${safeName}', '${safeText}', ${likes})" class="bg-blue-500 text-white w-6 h-6 border-2 border-black text-xs hover:scale-110 flex items-center justify-center rounded-full"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteComment('${key}')" class="bg-red-500 text-white w-6 h-6 border-2 border-black text-xs hover:scale-110 flex items-center justify-center rounded-full"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    
+                    <div class="w-12 h-12 border-2 border-black bg-white overflow-hidden shrink-0">${avatarSVG}</div>
+                    <div class="flex-1">
+                        <h4 class="comment-name font-black text-sm">${safeName}</h4>
+                        <p class="comment-text text-sm font-bold text-gray-600 break-words">${safeText}</p>
+                    </div>
+                    <div class="flex flex-col items-center justify-center gap-1 ml-2">
+                        <div onclick="likeComment('${key}')">${heartSVG}</div>
+                        <span class="text-xs font-black">${likes}</span>
+                    </div>
+                </div>`;
             commentsList.insertAdjacentHTML('beforeend', html);
         }
 
@@ -782,13 +830,21 @@
         }
 
         function deleteComment(key) { if(confirm("حذف نهائي؟")) db.ref('comments/' + key).remove(); }
+        
+        // دالة التعديل (الاسم، النص، اللايكات)
         function editComment(key, oldName, oldText, oldLikes) {
             const newName = prompt("تعديل الاسم:", oldName);
-            if(newName) {
+            if(newName !== null) {
                 const newText = prompt("تعديل النص:", oldText);
-                if(newText) {
+                if(newText !== null) {
                     const newLikes = prompt("تعديل عدد اللايكات:", oldLikes);
-                    if (newLikes !== null) db.ref('comments/' + key).update({ name: newName, text: newText, likes: parseInt(newLikes) || 0 });
+                    if (newLikes !== null) {
+                        db.ref('comments/' + key).update({
+                            name: newName,
+                            text: newText,
+                            likes: parseInt(newLikes) || 0
+                        });
+                    }
                 }
             }
         }
