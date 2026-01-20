@@ -2,19 +2,15 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mo64 Profile | Online</title>
     
     <meta property="og:title" content="مشعل سعيد - Mashal Said">
-    <meta property="og:description" content="موقعي الشخصي بإسلوبي الخاص - My personal website, with my own unique style.">
+    <meta property="og:description" content="موقعي الشخصي بإسلوبي الخاص">
     <meta property="og:image" content="https://raw.githubusercontent.com/mashalsaid/Myweb/main/profile.jpg">
     <meta property="og:url" content="https://mashalsaid.github.io/Myweb/">
     <meta property="og:type" content="website">
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="مشعل سعيد - Mashal Said">
-    <meta name="twitter:description" content="موقعي الشخصي بإسلوبي الخاص - My personal website, with my own unique style.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/mashalsaid/Myweb/main/profile.jpg">
-    <title>Mo64 Profile | Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Rubik:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -50,6 +46,7 @@
             font-family: 'Cairo', sans-serif;
             overflow-x: hidden;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
         .marquee-wrapper { display: flex; overflow: hidden; gap: 0; }
         .marquee-content { flex-shrink: 0; display: flex; align-items: center; justify-content: space-around; min-width: 100%; animation: scroll 20s linear infinite; }
@@ -68,8 +65,41 @@
         @keyframes bounce-crazy { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.9); } 100% { transform: scale(1); } }
         .floating-fab { animation: float-btn 3s ease-in-out infinite; }
         @keyframes float-btn { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        #commentsList::-webkit-scrollbar { width: 8px; }
-        #commentsList::-webkit-scrollbar-thumb { background: #000; border-radius: 4px; }
+        #commentsList::-webkit-scrollbar, #chatMessages::-webkit-scrollbar { width: 6px; }
+        #commentsList::-webkit-scrollbar-thumb, #chatMessages::-webkit-scrollbar-thumb { background: #000; border-radius: 4px; }
+
+        /* ستايل أيقونة الشات */
+        #chatFab { position: fixed; bottom: 100px; right: 20px; z-index: 50; touch-action: none; transition: transform 0.1s; }
+        
+        /* ستايل فقاعات الشات */
+        .chat-bubble { border: 3px solid #000; color: #000; padding: 8px 12px; font-weight: bold; position: relative; }
+        .chat-bubble-me { background-color: #22CCFF; border-radius: 15px 15px 0 15px; margin-left: auto; }
+        .chat-bubble-other { border-radius: 15px 15px 15px 0; margin-right: auto; }
+        
+        /* زر الحذف في الشات */
+        .msg-delete-btn { 
+            display: none; 
+            position: absolute; 
+            top: -10px; 
+            left: -10px; 
+            background: #ff0000; 
+            color: white; 
+            border: 2px solid black; 
+            width: 20px; 
+            height: 20px; 
+            border-radius: 50%; 
+            font-size: 10px; 
+            align-items: center; 
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        body.admin-active .msg-delete-btn { display: flex; }
+
+        /* ستايل مربعات الأدمن */
+        .admin-box { @apply border-4 border-black bg-gray-100 p-4 mb-4 shadow-hard rounded-lg; }
+        .admin-input { @apply w-full bg-white border-2 border-black text-black p-2 mb-2 font-bold outline-none focus:bg-yellow-100 rounded text-lg; }
+        .admin-label { @apply text-black font-black block mb-2 text-lg border-b-4 border-brand-yellow pb-1 inline-block; }
 
         /* أنيميشن القلوب */
         .heart-svg-btn { transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.5)); }
@@ -82,16 +112,17 @@
 
     <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
     <audio id="popSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+    <audio id="msgSound" src="https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3"></audio>
 
     <main class="flex-grow flex flex-col items-center justify-center pt-10 pb-6 relative z-10 w-full overflow-hidden">
         
         <div class="text-center mb-8 w-full max-w-2xl px-6">
             <div class="relative w-40 h-40 mx-auto mb-6 group">
                 <div class="absolute inset-0 bg-brand-blue rounded-full border-4 border-black translate-x-2 translate-y-2 transition-transform group-hover:translate-x-1 group-hover:translate-y-1"></div>
-                <img src="https://raw.githubusercontent.com/mashalsaid/Myweb/main/profile.png" onerror="this.src='https://api.dicebear.com/9.x/pixel-art/svg?seed=Mo64'" alt="Profile" class="relative w-full h-full object-cover rounded-full border-4 border-black bg-white">
+                <img src="https://raw.githubusercontent.com/mashalsaid/Myweb/main/profile.jpg" onerror="this.src='https://api.dicebear.com/9.x/pixel-art/svg?seed=Mo64'" alt="Profile" class="relative w-full h-full object-cover rounded-full border-4 border-black bg-white">
                 <div class="absolute bottom-0 right-0 bg-green-400 w-8 h-8 rounded-full border-4 border-black animate-pulse"></div>
             </div>
-            <h1 class="text-5xl font-black mb-2">مِشْعَل</h1>
+            <h1 id="adminTriggerBtn" class="text-5xl font-black mb-2 cursor-pointer hover:text-brand-blue transition-colors select-none">مِشْعَل</h1>
             <p class="text-xl font-bold text-gray-600 bg-white border-2 border-black inline-block px-4 py-1 shadow-hard -rotate-1">مطور ويب & مصمم ومحاسب كمان 😂</p>
             <div class="mt-8 relative z-0">
                 <div class="absolute inset-0 bg-brand-yellow transform rotate-1 border-4 border-black shadow-hard translate-y-2 rounded-xl -z-10"></div>
@@ -162,48 +193,43 @@
             <div class="bg-white border-4 border-black p-8 shadow-hard relative mt-4">
                 <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-brand-blue px-8 py-2 border-4 border-black font-black -rotate-1 text-black text-xl shadow-sm">أقسامي 📂</div>
                 <div class="flex flex-col gap-4 mt-4">
-                    <button onclick="showWorkInProgress('websites')" class="btn-action bg-brand-blue border-4 border-black p-4 text-center font-black text-xl shadow-[4px_4px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-3 w-full">
-                        <span>مواقعي</span>
-                    </button>
-                    <button onclick="showWorkInProgress('designs')" class="btn-action bg-brand-pink border-4 border-black p-4 text-center font-black text-xl shadow-[4px_4px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-3 w-full">
-                        <span>تصاميمي</span>
-                    </button>
-                    <button onclick="openContactModal()" class="btn-action bg-green-400 border-4 border-black p-4 text-center font-black text-xl shadow-[4px_4px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-3 text-black w-full">
-                        <i class="fa-solid fa-comments text-2xl"></i>
-                        <span>كلمني</span>
-                    </button>
+                    <button onclick="showWorkInProgress('websites')" class="btn-action bg-brand-blue border-4 border-black p-4 text-center font-black text-xl shadow-[4px_4px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-3 w-full"><span>مواقعي</span></button>
+                    <button onclick="showWorkInProgress('designs')" class="btn-action bg-brand-pink border-4 border-black p-4 text-center font-black text-xl shadow-[4px_4px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-3 w-full"><span>تصاميمي</span></button>
+                    <button onclick="openContactModal()" class="btn-action bg-green-400 border-4 border-black p-4 text-center font-black text-xl shadow-[4px_4px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-3 text-black w-full"><i class="fa-solid fa-comments text-2xl"></i><span>كلمني</span></button>
                 </div>
             </div>
         </div>
 
         <div class="w-full max-w-2xl px-6 mb-12">
             <div class="bg-white border-4 border-black p-6 shadow-hard relative mt-4">
-                <div id="guestbookTitle" class="absolute -top-5 left-1/2 -translate-x-1/2 bg-brand-yellow px-4 py-1 border-4 border-black font-black rotate-1 text-black cursor-pointer hover:scale-105 transition-transform select-none">
-                    ساحة الزوار 💬
-                </div>
-                
-                <div id="commentsList" class="space-y-4 mt-6 max-h-80 overflow-y-auto p-2">
-                    <div class="text-center text-gray-500 font-bold loading-msg">جاري الاتصال بقاعدة البيانات... ⏳</div>
-                </div>
-
-                <button onclick="openCommentModal()" class="btn-action w-full mt-6 bg-black text-white border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-pen-nib"></i> أضف تعليقك
-                </button>
+                <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-brand-yellow px-4 py-1 border-4 border-black font-black rotate-1 text-black cursor-pointer hover:scale-105 transition-transform select-none">ساحة الزوار 💬</div>
+                <div id="commentsList" class="space-y-4 mt-6 max-h-80 overflow-y-auto p-2"><div class="text-center text-gray-500 font-bold loading-msg">جاري التحميل... ⏳</div></div>
+                <button onclick="openCommentModal()" class="btn-action w-full mt-6 bg-black text-white border-4 border-black p-3 font-black shadow-hard hover:shadow-hard-hover hover:translate-y-1 transition-all flex items-center justify-center gap-2"><i class="fa-solid fa-pen-nib"></i> أضف تعليقك</button>
             </div>
         </div>
     </main>
 
-    <div class="fixed bottom-6 right-6 z-50 floating-fab group">
-        <div id="hypeCount" class="absolute -top-3 -left-3 bg-red-500 text-white font-black border-2 border-black px-2 py-1 rounded-full text-sm z-20 shadow-hard-hover">0</div>
-        <button id="hypeBtn" class="bg-brand-yellow w-20 h-20 rounded-full border-4 border-black shadow-hard group-hover:scale-110 transition-all flex items-center justify-center text-4xl active:bg-white">🔥</button>
+    <div id="chatFab" class="hidden cursor-move hover:scale-110 transition-transform">
+        <button onclick="toggleGlobalChat()" class="bg-brand-purple w-16 h-16 rounded-full border-4 border-black shadow-hard flex items-center justify-center text-3xl text-white"><i class="fa-solid fa-comments"></i></button>
     </div>
 
-    <div id="infoModal" class="fixed inset-0 bg-black/80 z-[300] hidden flex items-center justify-center p-6 backdrop-blur-sm">
-        <div class="bg-white border-4 border-black shadow-hard p-8 w-full max-w-md text-center relative">
-            <h2 id="infoTitle" class="text-3xl font-black mb-4"></h2>
-            <p id="infoBody" class="text-lg font-bold text-gray-700 mb-8 leading-relaxed"></p>
-            <button onclick="closeInfo()" class="w-full bg-black text-white border-4 border-black p-4 font-black text-xl hover:bg-brand-blue hover:text-black">تمام 😂</button>
+    <div id="globalChatModal" class="fixed inset-0 bg-black/50 z-[250] hidden flex items-end sm:items-center justify-center pointer-events-none">
+        <div class="bg-white w-full sm:w-96 h-[500px] border-t-4 sm:border-4 border-black shadow-hard flex flex-col pointer-events-auto transition-transform transform translate-y-full sm:translate-y-0 duration-300" id="chatContainer">
+            <div class="bg-brand-purple border-b-4 border-black p-3 flex justify-between items-center cursor-pointer" onclick="toggleGlobalChat()">
+                <h3 class="font-black text-white text-lg">💬 شات الزوار العام</h3>
+                <button class="text-white font-bold bg-black px-2 border-2 border-white">X</button>
+            </div>
+            <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-100"></div>
+            <div class="p-3 border-t-4 border-black bg-white flex gap-2">
+                <input type="text" id="globalChatInput" placeholder="اكتب رسالة..." class="flex-1 border-4 border-black p-2 font-bold outline-none">
+                <button onclick="sendGlobalMessage()" class="bg-brand-yellow border-4 border-black p-2 px-4 font-black hover:bg-yellow-400"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
         </div>
+    </div>
+
+    <div class="fixed bottom-6 left-6 z-50 floating-fab group">
+        <div id="hypeCount" class="absolute -top-3 -right-3 bg-red-500 text-white font-black border-2 border-black px-2 py-1 rounded-full text-sm z-20 shadow-hard-hover">0</div>
+        <button id="hypeBtn" class="bg-brand-yellow w-20 h-20 rounded-full border-4 border-black shadow-hard group-hover:scale-110 transition-all flex items-center justify-center text-4xl active:bg-white">🔥</button>
     </div>
 
     <div id="welcomeModal" class="fixed inset-0 bg-black/80 z-[300] hidden flex items-center justify-center p-6 backdrop-blur-sm">
@@ -211,6 +237,22 @@
             <h2 id="welcomeTitle" class="text-3xl font-black mb-4"></h2>
             <p id="welcomeBody" class="text-lg font-bold text-gray-700 mb-8 leading-relaxed"></p>
             <button onclick="closeWelcome()" class="w-full bg-black text-white border-4 border-black p-4 font-black text-xl hover:bg-brand-blue hover:text-black">اشطا، فهمت! 🚀</button>
+        </div>
+    </div>
+
+    <div id="globalMessageModal" class="fixed inset-0 bg-black/90 z-[400] hidden flex items-center justify-center p-6 backdrop-blur-sm">
+        <div class="bg-brand-yellow border-4 border-black shadow-hard p-8 w-full max-w-md text-center relative rotate-1">
+            <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 font-bold border-2 border-white">📢 رسالة من مشعل</div>
+            <p id="globalMessageBody" class="text-2xl font-black text-black mb-8 leading-relaxed mt-4"></p>
+            <button onclick="document.getElementById('globalMessageModal').classList.add('hidden')" class="w-full bg-white text-black border-4 border-black p-3 font-black text-xl hover:bg-gray-100">تم الاستلام 🫡</button>
+        </div>
+    </div>
+
+    <div id="infoModal" class="fixed inset-0 bg-black/80 z-[300] hidden flex items-center justify-center p-6 backdrop-blur-sm">
+        <div class="bg-white border-4 border-black shadow-hard p-8 w-full max-w-md text-center relative">
+            <h2 id="infoTitle" class="text-3xl font-black mb-4"></h2>
+            <p id="infoBody" class="text-lg font-bold text-gray-700 mb-8 leading-relaxed"></p>
+            <button onclick="closeInfo()" class="w-full bg-black text-white border-4 border-black p-4 font-black text-xl hover:bg-brand-blue hover:text-black">تمام 😂</button>
         </div>
     </div>
 
@@ -266,9 +308,54 @@
     <div id="adminModal" class="fixed inset-0 bg-black z-[200] hidden flex items-center justify-center p-4">
         <div class="text-center w-full max-w-sm">
             <h2 class="text-brand-yellow text-4xl font-black mb-6 animate-pulse">🔒 منطقة محظورة</h2>
-            <input type="password" id="adminPass" placeholder="كلمة السر..." class="w-full bg-black border-4 border-white text-white p-4 text-center text-xl font-bold outline-none mb-4">
-            <button onclick="checkAdmin()" class="bg-white text-black border-4 border-gray-500 w-full p-4 font-black text-xl hover:bg-brand-pink transition-colors">دخول</button>
-            <button onclick="closeAdmin()" class="text-gray-500 mt-4 text-sm hover:text-white">إلغاء</button>
+            <div id="adminLogin">
+                <input type="password" id="adminPass" placeholder="كلمة السر..." class="w-full bg-black border-4 border-white text-white p-4 text-center text-xl font-bold outline-none mb-4">
+                <button onclick="checkAdmin()" class="bg-white text-black border-4 border-gray-500 w-full p-4 font-black text-xl hover:bg-brand-pink transition-colors">دخول</button>
+                <button onclick="closeAdmin()" class="text-gray-500 mt-4 text-sm hover:text-white">إلغاء</button>
+            </div>
+            <div id="adminPanel" class="hidden w-full max-h-[80vh] overflow-y-auto">
+                <div class="bg-white p-4 border-4 border-black mb-4 rounded text-right shadow-hard">
+                    <h3 class="text-black font-black mb-4 text-center text-xl border-b-4 border-black pb-2">إعدادات الموقع</h3>
+                    
+                    <div class="admin-box">
+                        <label class="admin-label">👋 الترحيب</label>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-black text-sm font-bold">الحالة:</span>
+                            <button id="toggleWelcomeBtn" onclick="toggleSetting('welcome')" class="text-xs px-2 py-1 bg-gray-500 text-white" data-state="true">تحميل...</button>
+                        </div>
+                        <textarea id="welcomeText1" class="admin-input h-16" placeholder="نص الزيارة الأولى"></textarea>
+                        <textarea id="welcomeText2" class="admin-input h-16" placeholder="نص الزيارة الثانية"></textarea>
+                        <button onclick="saveWelcomeTexts()" class="bg-green-600 text-white border-2 border-black w-full py-2 font-bold hover:bg-green-500 shadow-[2px_2px_0px_#000]">حفظ النصوص</button>
+                    </div>
+
+                    <div class="admin-box">
+                        <label class="admin-label">💬 الشات العام</label>
+                        <div class="flex justify-between items-center">
+                            <span class="text-black text-sm font-bold">تفعيل الشات:</span>
+                            <button id="toggleChatBtn" onclick="toggleSetting('chat')" class="text-xs px-2 py-1 bg-gray-500 text-white" data-state="true">تحميل...</button>
+                        </div>
+                        <div class="mt-4 border-t-2 border-gray-300 pt-2">
+                            <button onclick="deleteAllChat()" class="bg-red-600 text-white border-2 border-black w-full py-2 font-bold hover:bg-red-500 shadow-[2px_2px_0px_#000]">🗑️ حذف كل الرسائل</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-box">
+                        <label class="admin-label">📢 رسالة للجميع</label>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-black text-sm font-bold">تفعيل:</span>
+                            <button id="togglePopupBtn" onclick="toggleSetting('popup')" class="text-xs px-2 py-1 bg-gray-500 text-white" data-state="true">تحميل...</button>
+                        </div>
+                        <textarea id="popupText" class="admin-input h-20" placeholder="اكتب الرسالة هنا..."></textarea>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-black text-xs font-bold">بعد كام ثانية:</span>
+                            <input id="popupDelay" type="number" class="admin-input w-20 text-center" value="3">
+                        </div>
+                        <button onclick="savePopupSettings()" class="bg-brand-yellow text-black border-2 border-black font-bold w-full py-2 hover:bg-yellow-400 shadow-[2px_2px_0px_#000]">نشر الرسالة</button>
+                    </div>
+
+                </div>
+                <button onclick="closeAdmin()" class="bg-red-600 text-white border-4 border-black px-4 py-2 hover:bg-red-500 w-full font-black shadow-hard">خروج</button>
+            </div>
         </div>
     </div>
 
@@ -285,31 +372,38 @@
     </footer>
 
     <script>
+        // دوال النوافذ
         function openContactModal() { document.getElementById('contactModal').classList.remove('hidden'); }
         function closeContactModal() { document.getElementById('contactModal').classList.add('hidden'); }
         function openCommentModal() { document.getElementById('commentModal').classList.remove('hidden'); backToStep1(); }
         function closeCommentModal() { document.getElementById('commentModal').classList.add('hidden'); }
         function backToStep1() { document.getElementById('step1').classList.remove('hidden'); document.getElementById('step2').classList.add('hidden'); }
         function closeWelcome() { document.getElementById('welcomeModal').classList.add('hidden'); }
-        function closeAdmin() { document.getElementById('adminModal').classList.add('hidden'); }
+        function closeAdmin() { 
+            document.getElementById('adminModal').classList.add('hidden'); 
+            document.getElementById('adminLogin').classList.remove('hidden');
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('adminPass').value = '';
+            document.body.classList.remove('admin-active'); // إخفاء أزرار الحذف
+        }
         function closeInfo() { document.getElementById('infoModal').classList.add('hidden'); }
 
-        // دالة إظهار نافذة "لسه بعمل الصفحة"
         function showWorkInProgress(type) {
             const modal = document.getElementById('infoModal');
             const title = document.getElementById('infoTitle');
             const body = document.getElementById('infoBody');
-
             title.innerText = "لسه بعمل صفحه 😂";
-
             if (type === 'websites') {
-                body.innerText = "مواقعي كثيير بس لسه بعمل مكان يجمعهم كلهم في مكان واحد";
+                body.innerText = "وصف مواقعي كثيير بس لسه بعمل مكان يجمعهم كلهم في مكان واحد";
             } else {
-                body.innerText = "تصاميمي كثيير بس لسه بعمل مكان يجمعهم كلهم في مكان واحد";
+                body.innerText = "وصف تصاميمي كثيير بس لسه بعمل مكان يجمعهم كلهم في مكان واحد";
             }
             modal.classList.remove('hidden');
         }
 
+        // ==========================================
+        //  ✅ بيانات مشروعك myweb-30e01 ✅
+        // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyBO1bAxaOB6lho9hm8bUgQ2bCof5rb9QUw",
             authDomain: "myweb-30e01.firebaseapp.com",
@@ -328,14 +422,16 @@
             console.log("Firebase Connected ✅");
         } catch(err) {
             console.error("Firebase Error:", err);
-            document.querySelector('.loading-msg').innerHTML = "خطأ في الاتصال ❌";
+            document.querySelector('.loading-msg').innerHTML = "خطأ في الاتصال ❌<br>تأكد من إعدادات Firebase!";
         }
 
         const clickSound = document.getElementById('clickSound');
         const popSound = document.getElementById('popSound');
+        const msgSound = document.getElementById('msgSound');
         function playClick() { clickSound.currentTime = 0; clickSound.play(); }
         document.querySelectorAll('button, a').forEach(btn => btn.addEventListener('click', playClick));
 
+        // الهايب
         const hypeBtn = document.getElementById('hypeBtn');
         const hypeCount = document.getElementById('hypeCount');
         let currentHype = localStorage.getItem('hypeLevel') ? parseInt(localStorage.getItem('hypeLevel')) : 1042;
@@ -350,48 +446,297 @@
             confetti({ particleCount: 80, spread: 60, origin: { x: 0.9, y: 0.9 }, angle: 135, colors: ['#FFDE00', '#FF90E8', '#22CCFF'] });
         });
 
-        window.addEventListener('DOMContentLoaded', () => {
-            let visitCount = localStorage.getItem('mo64_visit_count');
-            if(!visitCount) visitCount = 0;
-            setTimeout(() => {
-                if (visitCount == 0) {
-                    document.getElementById('welcomeTitle').innerText = "أهلاً بيك يا حلو 👋";
-                    document.getElementById('welcomeBody').innerHTML = "نورت موقعي!<br>متنساش تضغط على علامة النار (🔥) كثييييير!";
-                    localStorage.setItem('mo64_visit_count', 1);
-                    document.getElementById('welcomeModal').classList.remove('hidden');
-                    popSound.play();
-                } else if (visitCount == 1) {
-                    document.getElementById('welcomeTitle').innerText = "أنت جيت تاني؟ 😒";
-                    document.getElementById('welcomeBody').innerHTML = "انت جيت تاني؟ 😒<br>انت منورنيي اكيد الموقع عجبك يا حلو 🤑";
-                    localStorage.setItem('mo64_visit_count', 2);
-                    document.getElementById('welcomeModal').classList.remove('hidden');
-                    popSound.play();
-                }
-            }, 1000);
-        });
+        // ----------------------------------------------------
+        // المنطق الرئيسي
+        // ----------------------------------------------------
+        let siteSettings = {
+            welcome: { enabled: true, text1: "أهلاً بيك يا حلو 👋", text2: "أنت جيت تاني؟ 😒" },
+            chat: { enabled: false },
+            popup: { enabled: false, text: "رسالة مهمة!", delay: 3 }
+        };
 
-        const commentsList = document.getElementById('commentsList');
-        const nameInput = document.getElementById('commentName');
-        const commentInput = document.getElementById('commentText');
-        let selectedAvatarSVG = null;
-
-        if(db) {
-            const commentsRef = db.ref('comments');
-            commentsRef.on('value', (snapshot) => {
-                commentsList.innerHTML = '';
-                const data = snapshot.val();
-                if(data) {
-                    const commentsArray = Object.entries(data).reverse();
-                    commentsArray.forEach(([key, value]) => {
-                        addCommentToDOM(key, value.name, value.text, value.avatar, value.likes || 0);
-                    });
-                } else {
-                    commentsList.innerHTML = '<div class="text-center text-gray-400 font-bold">كن الأول في التعليق! 🚀</div>';
-                }
-            });
+        // توليد ألوان فريدة للأشخاص
+        function getUserColor(id) {
+            const colors = ['#FFDE00', '#FF90E8', '#9D4EDD', '#84cc16', '#f97316', '#06b6d4', '#f43f5e'];
+            let hash = 0;
+            for(let i=0; i<id.length; i++) hash += id.charCodeAt(i);
+            return colors[hash % colors.length];
         }
 
-        // دالة لاختيار شكل عشوائي للقلب من 5 أشكال مختلفة
+        window.addEventListener('DOMContentLoaded', () => {
+            if(db) {
+                db.ref('site_settings').on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if(data) {
+                        siteSettings = data;
+                        updateAdminUI();
+                        applyRealtimeSettings();
+                    } else {
+                        // لو قاعدة البيانات فاضية
+                        db.ref('site_settings').set(siteSettings);
+                    }
+                });
+
+                setTimeout(() => {
+                    handleWelcomeLogic();
+                    handleGlobalPopup();
+                }, 1000);
+
+                const chatContainer = document.getElementById('chatMessages');
+                db.ref('public_chat').limitToLast(50).on('child_added', (snapshot) => {
+                    const msg = snapshot.val();
+                    const key = snapshot.key;
+                    const isMe = msg.senderID === localStorage.getItem('mo64_uid');
+                    
+                    const div = document.createElement('div');
+                    const color = getUserColor(msg.senderID);
+                    
+                    // تصميم الرسالة مع زر الحذف المخفي
+                    div.className = `chat-bubble mb-2 max-w-[80%] break-words ${isMe ? 'chat-bubble-me' : 'chat-bubble-other'}`;
+                    
+                    if(isMe) {
+                        div.style.backgroundColor = '#22CCFF';
+                    } else {
+                        div.style.backgroundColor = color;
+                    }
+                    
+                    div.innerHTML = `
+                        ${msg.text}
+                        <div class="msg-delete-btn" onclick="deleteSingleMessage('${key}', this)">X</div>
+                    `;
+                    
+                    chatContainer.appendChild(div);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                    if(!isMe) msgSound.play().catch(()=>{});
+                });
+
+                // حذف الرسالة من الواجهة عند حذفها من الداتابيس
+                db.ref('public_chat').on('child_removed', (snapshot) => {
+                    // تحديث الشات بإعادة تحميل بسيط أو إخفاء العنصر (سنترك التحديث التلقائي)
+                    // في أبسط صورة: سنقوم بمسح المحتوى وإعادة التحميل، لكن هنا سنعتمد على التحديث القادم
+                    const chatContainer = document.getElementById('chatMessages');
+                    chatContainer.innerHTML = ''; // تفريغ وإعادة تحميل (لضمان الترتيب)
+                    db.ref('public_chat').limitToLast(50).once('value', (snap) => {
+                        snap.forEach((child) => {
+                            const msg = child.val();
+                            const key = child.key;
+                            const isMe = msg.senderID === localStorage.getItem('mo64_uid');
+                            const div = document.createElement('div');
+                            const color = getUserColor(msg.senderID);
+                            div.className = `chat-bubble mb-2 max-w-[80%] break-words ${isMe ? 'chat-bubble-me' : 'chat-bubble-other'}`;
+                            div.style.backgroundColor = isMe ? '#22CCFF' : color;
+                            div.innerHTML = `${msg.text}<div class="msg-delete-btn" onclick="deleteSingleMessage('${key}', this)">X</div>`;
+                            chatContainer.appendChild(div);
+                        });
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    });
+                });
+                
+                // كود التعليقات القديم (كما هو)
+                const commentsList = document.getElementById('commentsList');
+                const commentsRef = db.ref('comments');
+                commentsRef.on('value', (snapshot) => {
+                    commentsList.innerHTML = '';
+                    const data = snapshot.val();
+                    if(data) {
+                        const commentsArray = Object.entries(data).reverse();
+                        commentsArray.forEach(([key, value]) => {
+                            addCommentToDOM(key, value.name, value.text, value.avatar, value.likes || 0);
+                        });
+                    } else {
+                        commentsList.innerHTML = '<div class="text-center text-gray-400 font-bold">كن الأول في التعليق! 🚀</div>';
+                    }
+                });
+            }
+        });
+
+        function handleWelcomeLogic() {
+            if (!siteSettings.welcome?.enabled) return;
+            let visitCount = localStorage.getItem('mo64_visit_count');
+            if(!visitCount) visitCount = 0;
+
+            if (visitCount == 0) {
+                document.getElementById('welcomeTitle').innerText = siteSettings.welcome.text1 || "أهلاً بيك يا حلو 👋";
+                document.getElementById('welcomeBody').innerHTML = "نورت موقعي!<br>متنساش تضغط على علامة النار (🔥) كثييييير!";
+                localStorage.setItem('mo64_visit_count', 1);
+                document.getElementById('welcomeModal').classList.remove('hidden');
+                popSound.play();
+            } else if (visitCount == 1) {
+                document.getElementById('welcomeTitle').innerText = siteSettings.welcome.text2 || "أنت جيت تاني؟ 😒";
+                document.getElementById('welcomeBody').innerHTML = "منورني، أكيد الموقع عجبك 😉";
+                localStorage.setItem('mo64_visit_count', 2);
+                document.getElementById('welcomeModal').classList.remove('hidden');
+                popSound.play();
+            }
+        }
+
+        function handleGlobalPopup() {
+            if (siteSettings.popup?.enabled && !sessionStorage.getItem('popupShown')) {
+                const delay = (siteSettings.popup.delay || 3) * 1000;
+                setTimeout(() => {
+                    document.getElementById('globalMessageBody').innerText = siteSettings.popup.text;
+                    document.getElementById('globalMessageModal').classList.remove('hidden');
+                    sessionStorage.setItem('popupShown', 'true');
+                    popSound.play();
+                }, delay);
+            }
+        }
+
+        function applyRealtimeSettings() {
+            const fab = document.getElementById('chatFab');
+            if (siteSettings.chat?.enabled) {
+                fab.classList.remove('hidden');
+            } else {
+                fab.classList.add('hidden');
+                document.getElementById('globalChatModal').classList.add('hidden');
+            }
+        }
+
+        // -------------------------
+        // دوال لوحة الأدمن (محدثة بالكامل)
+        // -------------------------
+        function updateAdminUI() {
+            updateToggleBtn('toggleWelcomeBtn', siteSettings.welcome?.enabled);
+            updateToggleBtn('toggleChatBtn', siteSettings.chat?.enabled);
+            updateToggleBtn('togglePopupBtn', siteSettings.popup?.enabled);
+
+            if(document.getElementById('adminPanel').classList.contains('hidden')) return;
+            
+            document.getElementById('welcomeText1').value = siteSettings.welcome?.text1 || "";
+            document.getElementById('welcomeText2').value = siteSettings.welcome?.text2 || "";
+            document.getElementById('popupText').value = siteSettings.popup?.text || "";
+            document.getElementById('popupDelay').value = siteSettings.popup?.delay || 3;
+        }
+
+        function updateToggleBtn(btnId, state) {
+            const btn = document.getElementById(btnId);
+            if(btn) {
+                btn.innerText = state ? "مفعل ✅" : "معطل ❌";
+                btn.className = state ? "text-xs px-2 py-1 bg-green-500 text-white font-bold border-2 border-black" : "text-xs px-2 py-1 bg-red-500 text-white font-bold border-2 border-black";
+                btn.dataset.state = state;
+            }
+        }
+
+        function toggleSetting(type) {
+            if(!db) return alert("قاعدة البيانات غير متصلة!");
+            let path = '';
+            let currentValue = false;
+            if (type === 'welcome') { path = 'welcome/enabled'; currentValue = siteSettings.welcome?.enabled; }
+            else if (type === 'chat') { path = 'chat/enabled'; currentValue = siteSettings.chat?.enabled; }
+            else if (type === 'popup') { path = 'popup/enabled'; currentValue = siteSettings.popup?.enabled; }
+            db.ref('site_settings/' + path).set(!currentValue).catch(err => alert("حدث خطأ: " + err));
+        }
+
+        function saveWelcomeTexts() {
+            const t1 = document.getElementById('welcomeText1').value;
+            const t2 = document.getElementById('welcomeText2').value;
+            db.ref('site_settings/welcome/text1').set(t1);
+            db.ref('site_settings/welcome/text2').set(t2);
+            alert("تم حفظ نصوص الترحيب 👍");
+        }
+
+        function savePopupSettings() {
+            const text = document.getElementById('popupText').value;
+            const delay = document.getElementById('popupDelay').value;
+            db.ref('site_settings/popup/text').set(text);
+            db.ref('site_settings/popup/delay').set(parseInt(delay));
+            alert("تم نشر الرسالة (ستظهر للزوار الجدد) 📢");
+        }
+
+        // حذف كل الشات
+        function deleteAllChat() {
+            if(confirm("⚠️ هل أنت متأكد؟ سيتم حذف كل المحادثة ولا يمكن التراجع!")) {
+                db.ref('public_chat').remove()
+                .then(() => alert("تم تنظيف الشات بنجاح 🧼"))
+                .catch(err => alert("خطأ: " + err));
+            }
+        }
+
+        // حذف رسالة واحدة
+        function deleteSingleMessage(key, btnElement) {
+            if(confirm("حذف هذه الرسالة؟")) {
+                db.ref('public_chat/' + key).remove();
+                btnElement.parentElement.remove();
+            }
+        }
+
+        document.getElementById('adminTriggerBtn').addEventListener('click', () => {
+            document.getElementById('adminModal').classList.remove('hidden');
+        });
+
+        function checkAdmin() {
+            if (document.getElementById('adminPass').value === "meme2003") {
+                document.body.classList.add('admin-active'); // تفعيل وضع الأدمن
+                document.getElementById('adminLogin').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+                updateAdminUI(); 
+                alert("أهلاً يا مدير! 🕵️‍♂️");
+            } else { alert("كلمة السر غلط! 😂"); }
+        }
+
+        // -------------------------
+        // كود الشات (Draggable)
+        // -------------------------
+        const fab = document.getElementById('chatFab');
+        let isDragging = false, startX, startY, initialLeft, initialTop;
+
+        fab.addEventListener('mousedown', startDrag);
+        fab.addEventListener('touchstart', startDrag, {passive: false});
+
+        function startDrag(e) {
+            isDragging = false;
+            if(e.type === 'touchstart') { startX = e.touches[0].clientX; startY = e.touches[0].clientY; } 
+            else { startX = e.clientX; startY = e.clientY; }
+            const rect = fab.getBoundingClientRect();
+            initialLeft = rect.left; initialTop = rect.top;
+            fab.style.bottom = 'auto'; fab.style.right = 'auto';
+            fab.style.left = initialLeft + 'px'; fab.style.top = initialTop + 'px';
+            document.addEventListener('mousemove', drag); document.addEventListener('touchmove', drag, {passive: false});
+            document.addEventListener('mouseup', endDrag); document.addEventListener('touchend', endDrag);
+        }
+        function drag(e) {
+            e.preventDefault(); isDragging = true;
+            let clientX = (e.type === 'touchmove') ? e.touches[0].clientX : e.clientX;
+            let clientY = (e.type === 'touchmove') ? e.touches[0].clientY : e.clientY;
+            fab.style.left = (initialLeft + clientX - startX) + 'px';
+            fab.style.top = (initialTop + clientY - startY) + 'px';
+        }
+        function endDrag() {
+            document.removeEventListener('mousemove', drag); document.removeEventListener('touchmove', drag);
+            document.removeEventListener('mouseup', endDrag); document.removeEventListener('touchend', endDrag);
+            const rect = fab.getBoundingClientRect();
+            if (rect.left + rect.width / 2 < window.innerWidth / 2) fab.style.left = '20px';
+            else fab.style.left = (window.innerWidth - rect.width - 20) + 'px';
+            if(rect.top < 20) fab.style.top = '20px';
+            if(rect.bottom > window.innerHeight - 20) fab.style.top = (window.innerHeight - rect.height - 20) + 'px';
+        }
+
+        function toggleGlobalChat() {
+            if (isDragging) return;
+            const modal = document.getElementById('globalChatModal');
+            const container = document.getElementById('chatContainer');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                setTimeout(() => container.classList.remove('translate-y-full'), 10);
+            } else {
+                container.classList.add('translate-y-full');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            }
+        }
+
+        function sendGlobalMessage() {
+            const input = document.getElementById('globalChatInput');
+            const text = input.value.trim();
+            if (!text) return;
+            let uid = localStorage.getItem('mo64_uid');
+            if (!uid) { uid = 'user_' + Math.random().toString(36).substr(2, 9); localStorage.setItem('mo64_uid', uid); }
+            db.ref('public_chat').push({ text: text, senderID: uid, timestamp: Date.now() });
+            input.value = '';
+        }
+
+        // -------------------------
+        // كود التعليقات والقلوب
+        // -------------------------
         function getRandomHeartSVG() {
             const colors = ['#FF0099', '#FFDE00', '#22CCFF', '#9D4EDD', '#000000', '#FF0000', '#00FF00', '#FF5733'];
             const c1 = colors[Math.floor(Math.random() * colors.length)];
@@ -399,126 +744,54 @@
             const c3 = colors[Math.floor(Math.random() * colors.length)];
             const type = Math.floor(Math.random() * 5);
             let svgContent = '';
-
-            if (type === 0) {
-                // 1. القلب الزجزاج
-                svgContent = `<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${c1}" stroke="black" stroke-width="1.5"/><path d="M6 10 L8 8 L10 10 L12 8 L14 10 L16 8 L18 10" stroke="${c2}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="14" r="2.5" fill="${c3}" stroke="black" stroke-width="1"/>`;
-            } else if (type === 1) {
-                // 2. القلب البكسل
-                svgContent = `<path d="M7 4h2v2h2v-2h2v-2h2v2h2v2h2v2h-2v2h-2v2h-2v2h-2v2h-2v-2h-2v-2h-2v-2h-2v-2h2v-2z" fill="${c1}" stroke="black" stroke-width="1"/><rect x="9" y="7" width="2" height="2" fill="${c2}"/><rect x="13" y="7" width="2" height="2" fill="${c2}"/>`;
-            } else if (type === 2) {
-                // 3. القلب المخطط
-                svgContent = `<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${c1}" stroke="black" stroke-width="1.5"/><path d="M4 9h16M6 13h12M9 17h6" stroke="${c2}" stroke-width="2"/>`;
-            } else if (type === 3) {
-                // 4. القلب المستهدف
-                svgContent = `<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${c1}" stroke="black" stroke-width="1.5"/><path d="M12 17l-1-1C8 13 6 11 6 9c0-1.5 1-2.5 2.5-2.5 1 0 2 .5 2.5 1.5.5-1 1.5-1.5 2.5-1.5 1.5 0 2.5 1 2.5 2.5 0 2-2 4-5 7l-1 1z" fill="${c2}" stroke="black"/>`;
-            } else {
-                // 5. كلاسيك ميكس
-                svgContent = `<defs><linearGradient id="g${Math.random()}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:${c1};stop-opacity:1" /><stop offset="100%" style="stop-color:${c2};stop-opacity:1" /></linearGradient></defs><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#g${Math.random()})" stroke="black" stroke-width="1.5"/>`;
-            }
+            if (type === 0) svgContent = `<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${c1}" stroke="black" stroke-width="1.5"/><path d="M6 10 L8 8 L10 10 L12 8 L14 10 L16 8 L18 10" stroke="${c2}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="14" r="2.5" fill="${c3}" stroke="black" stroke-width="1"/>`;
+            else if (type === 1) svgContent = `<path d="M7 4h2v2h2v-2h2v2h2v2h2v2h-2v2h-2v2h-2v2h-2v-2h-2v-2h-2v-2h2v-2z" fill="${c1}" stroke="black" stroke-width="1"/><rect x="9" y="7" width="2" height="2" fill="${c2}"/><rect x="13" y="7" width="2" height="2" fill="${c2}"/>`;
+            else if (type === 2) svgContent = `<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${c1}" stroke="black" stroke-width="1.5"/><path d="M4 9h16M6 13h12M9 17h6" stroke="${c2}" stroke-width="2"/>`;
+            else if (type === 3) svgContent = `<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="${c1}" stroke="black" stroke-width="1.5"/><path d="M12 17l-1-1C8 13 6 11 6 9c0-1.5 1-2.5 2.5-2.5 1 0 2 .5 2.5 1.5.5-1 1.5-1.5 2.5-1.5 1.5 0 2.5 1 2.5 2.5 0 2-2 4-5 7l-1 1z" fill="${c2}" stroke="black"/>`;
+            else svgContent = `<defs><linearGradient id="g${Math.random()}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:${c1};stop-opacity:1" /><stop offset="100%" style="stop-color:${c2};stop-opacity:1" /></linearGradient></defs><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#g${Math.random()})" stroke="black" stroke-width="1.5"/>`;
             return `<svg viewBox="0 0 24 24" class="w-8 h-8 hover:scale-110 transition-transform cursor-pointer heart-svg-btn">${svgContent}</svg>`;
         }
 
         function addCommentToDOM(key, name, text, avatarSVG, likes) {
             const safeName = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            // يتم توليد القلب فقط عند العرض (سيتغير شكله مع كل تحميل للصفحة وهذا يعطي شعور التجدد)
             const heartSVG = getRandomHeartSVG();
-
-            const html = `
-                <div class="comment-item flex gap-3 bg-white border-4 border-black p-3 shadow-[2px_2px_0px_#000] relative group" data-key="${key}">
-                    <div class="w-12 h-12 border-2 border-black bg-white overflow-hidden shrink-0">${avatarSVG}</div>
-                    <div class="flex-1">
-                        <h4 class="comment-name font-black text-sm">${safeName}</h4>
-                        <p class="comment-text text-sm font-bold text-gray-600 break-words">${safeText}</p>
-                    </div>
-                    <div class="flex flex-col items-center justify-center gap-1 ml-2">
-                        <div onclick="likeComment('${key}')">${heartSVG}</div>
-                        <span class="text-xs font-black">${likes}</span>
-                    </div>
-                    <div class="admin-controls flex-col gap-2 absolute left-2 top-2">
-                        <button onclick="deleteComment('${key}')" class="bg-red-500 text-white w-6 h-6 border-2 border-black text-xs hover:scale-110"><i class="fa-solid fa-trash"></i></button>
-                        <button onclick="editComment('${key}', '${safeName}', '${safeText}', ${likes})" class="bg-blue-500 text-white w-6 h-6 border-2 border-black text-xs hover:scale-110"><i class="fa-solid fa-pen"></i></button>
-                    </div>
-                </div>`;
+            const html = `<div class="comment-item flex gap-3 bg-white border-4 border-black p-3 shadow-[2px_2px_0px_#000] relative group" data-key="${key}"><div class="w-12 h-12 border-2 border-black bg-white overflow-hidden shrink-0">${avatarSVG}</div><div class="flex-1"><h4 class="comment-name font-black text-sm">${safeName}</h4><p class="comment-text text-sm font-bold text-gray-600 break-words">${safeText}</p></div><div class="flex flex-col items-center justify-center gap-1 ml-2"><div onclick="likeComment('${key}')">${heartSVG}</div><span class="text-xs font-black">${likes}</span></div><div class="admin-controls flex-col gap-2 absolute left-2 top-2"><button onclick="deleteComment('${key}')" class="bg-red-500 text-white w-6 h-6 border-2 border-black text-xs hover:scale-110"><i class="fa-solid fa-trash"></i></button><button onclick="editComment('${key}', '${safeName}', '${safeText}', ${likes})" class="bg-blue-500 text-white w-6 h-6 border-2 border-black text-xs hover:scale-110"><i class="fa-solid fa-pen"></i></button></div></div>`;
             commentsList.insertAdjacentHTML('beforeend', html);
         }
 
         function likeComment(key) {
             const btn = document.querySelector(`div[data-key="${key}"] .heart-svg-btn`);
-            if(btn) {
-                btn.classList.remove('like-bounce');
-                void btn.offsetWidth;
-                btn.classList.add('like-bounce');
-            }
-            db.ref('comments/' + key + '/likes').transaction((currentLikes) => {
-                return (currentLikes || 0) + 1;
-            });
+            if(btn) { btn.classList.remove('like-bounce'); void btn.offsetWidth; btn.classList.add('like-bounce'); }
+            db.ref('comments/' + key + '/likes').transaction((currentLikes) => (currentLikes || 0) + 1);
             popSound.currentTime = 0; popSound.play();
         }
 
         function goToStep2() {
             if (!nameInput.value.trim()) { alert("اكتب اسمك الأول!"); return; }
-            const selectedRadio = document.querySelector('input[name="avatar"]:checked');
-            const svgElement = selectedRadio.nextElementSibling.querySelector('svg');
-            if (svgElement) {
-                selectedAvatarSVG = svgElement.outerHTML;
-                document.getElementById('selectedAvatarPreview').innerHTML = selectedAvatarSVG;
-                document.getElementById('selectedNamePreview').innerText = nameInput.value;
-                document.getElementById('step1').classList.add('hidden');
-                document.getElementById('step2').classList.remove('hidden');
-            }
+            document.getElementById('selectedAvatarPreview').innerHTML = document.querySelector('input[name="avatar"]:checked').nextElementSibling.querySelector('svg').outerHTML;
+            document.getElementById('selectedNamePreview').innerText = nameInput.value;
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
         }
 
         function submitComment() {
             if (!commentInput.value.trim()) { alert("اكتب أي حاجة!"); return; }
-            if(db) {
-                db.ref('comments').push({
-                    name: nameInput.value,
-                    text: commentInput.value,
-                    avatar: selectedAvatarSVG,
-                    likes: 0,
-                    timestamp: Date.now()
-                }).then(() => {
-                    commentInput.value = '';
-                    closeCommentModal();
-                    popSound.play();
-                }).catch(err => { alert("خطأ في الإرسال"); console.error(err); });
-            }
+            db.ref('comments').push({ name: nameInput.value, text: commentInput.value, avatar: document.getElementById('selectedAvatarPreview').innerHTML, likes: 0, timestamp: Date.now() });
+            commentInput.value = ''; closeCommentModal(); popSound.play();
         }
 
-        let clickCount = 0; let clickTimer;
-        document.getElementById('guestbookTitle').addEventListener('click', () => {
-            clickCount++;
-            if (clickCount === 1) clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
-            if (clickCount === 3) { clearTimeout(clickTimer); clickCount = 0; document.getElementById('adminModal').classList.remove('hidden'); }
-        });
-        function checkAdmin() {
-            if (document.getElementById('adminPass').value === "meme2003") {
-                document.body.classList.add('admin-active'); closeAdmin(); alert("أهلاً يا مدير! 🕵️‍♂️");
-            } else { alert("كلمة السر غلط! 😂"); }
-        }
-
-        function deleteComment(key) {
-            if(confirm("حذف نهائي؟")) { db.ref('comments/' + key).remove(); }
-        }
-
+        function deleteComment(key) { if(confirm("حذف نهائي؟")) db.ref('comments/' + key).remove(); }
         function editComment(key, oldName, oldText, oldLikes) {
             const newName = prompt("تعديل الاسم:", oldName);
-            if(newName !== null) {
+            if(newName) {
                 const newText = prompt("تعديل النص:", oldText);
-                if(newText !== null) {
+                if(newText) {
                     const newLikes = prompt("تعديل عدد اللايكات:", oldLikes);
-                    if (newLikes !== null) {
-                        db.ref('comments/' + key).update({
-                            name: newName || oldName,
-                            text: newText || oldText,
-                            likes: parseInt(newLikes) || 0
-                        });
-                    }
+                    if (newLikes !== null) db.ref('comments/' + key).update({ name: newName, text: newText, likes: parseInt(newLikes) || 0 });
                 }
             }
         }
     </script>
 </body>
-</html> 
+</html>
